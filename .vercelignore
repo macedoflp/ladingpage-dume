@@ -1,0 +1,11 @@
+.git
+.vercel
+
+dume-arquitetura/node_modules
+dume-arquitetura/dist
+dume-arquitetura/dist-ssr
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*

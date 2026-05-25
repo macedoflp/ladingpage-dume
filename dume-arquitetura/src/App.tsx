@@ -1,8 +1,12 @@
-import { useEffect, type FormEvent } from 'react'
-import heroImage from './assets/generated/dume-hero.png'
+import { useEffect, useState, type FormEvent } from 'react'
 import './App.css'
 
 const logoPath = '/imgs/logo.png'
+const footerLogoPath = '/imgs/logofooter.png'
+const heroImage = '/imgs/dume-hero.jpg'
+const heroMobileImage = '/imgs/dume-hero-mobile.jpg'
+const foundersImage = '/imgs/thalia-amanda.jpg'
+const foundersMobileImage = '/imgs/thalia-amanda-mobile.jpg'
 
 const navLinks = [
   { label: 'Início', href: '#inicio' },
@@ -86,25 +90,74 @@ const differentials = [
 ]
 
 function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isMenuOpen])
+
+  function closeMenu() {
+    setIsMenuOpen(false)
+  }
+
   return (
     <header className="site-header" aria-label="Cabeçalho principal">
-      <a className="brand logo-link" href="#inicio" aria-label="Dume Arquitetura">
+      <a
+        className="brand logo-link"
+        href="#inicio"
+        aria-label="Dume Arquitetura"
+        onClick={closeMenu}
+      >
         <img
           className="logo-image logo-image-header"
           src={logoPath}
+          width={1065}
+          height={634}
           alt="Dume Arquitetura"
         />
       </a>
 
-      <nav className="main-nav" aria-label="Navegação principal">
+      <button
+        className="menu-toggle"
+        type="button"
+        aria-controls="main-navigation"
+        aria-expanded={isMenuOpen}
+        aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+        onClick={() => setIsMenuOpen((current) => !current)}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
+
+      <nav
+        className={`main-nav ${isMenuOpen ? 'is-open' : ''}`}
+        id="main-navigation"
+        aria-label="Navegação principal"
+      >
         {navLinks.map((link) => (
-          <a key={link.href} href={link.href}>
+          <a key={link.href} href={link.href} onClick={closeMenu}>
             {link.label}
           </a>
         ))}
+
+        <a className="mobile-nav-cta" href="#contato" onClick={closeMenu}>
+          Solicitar orçamento
+        </a>
       </nav>
 
-      <a className="header-cta" href="#contato">
+      <a className="header-cta" href="#contato" onClick={closeMenu}>
         Solicitar orçamento
       </a>
     </header>
@@ -153,6 +206,12 @@ function Hero() {
         <figure className="hero-media">
           <img
             src={heroImage}
+            srcSet={`${heroMobileImage} 960w, ${heroImage} 1536w`}
+            sizes="(max-width: 760px) calc(100vw - 36px), (max-width: 1100px) calc(100vw - 44px), 690px"
+            width={1536}
+            height={1024}
+            decoding="async"
+            fetchPriority="high"
             alt="Interior arquitetônico contemporâneo com madeira, pedra clara e iluminação natural suave"
           />
         </figure>
@@ -188,11 +247,36 @@ function About() {
   return (
     <section className="page-section about-section" id="sobre">
       <div className="about-grid">
-        <SectionIntro
-          eyebrow="Sobre a Dume"
-          title="Um olhar autoral para espaços que precisam fazer sentido."
-          description="A Dume Arquitetura nasce do encontro entre técnica, escuta e delicadeza visual."
-        />
+        <div className="about-identity">
+          <SectionIntro
+            eyebrow="Sobre a Dume"
+            title="Um olhar autoral para espaços que precisam fazer sentido."
+            description="A Dume Arquitetura nasce do encontro entre técnica, escuta e delicadeza visual."
+          />
+
+          <figure className="about-photo reveal">
+            <picture>
+              <source
+                media="(max-width: 760px)"
+                srcSet={foundersMobileImage}
+              />
+              <img
+                src={foundersImage}
+                srcSet={`${foundersMobileImage} 900w, ${foundersImage} 1500w`}
+                sizes="(max-width: 760px) calc(100vw - 36px), (max-width: 1100px) calc(100vw - 44px), 560px"
+                width={1500}
+                height={1002}
+                loading="lazy"
+                decoding="async"
+                alt="Thalia Melônio e Amanda Duarte, arquitetas e urbanistas da Dume Arquitetura"
+              />
+            </picture>
+            <figcaption>
+              <span>Thalia Melônio e Amanda Duarte</span>
+              <strong>Arquitetas, urbanistas e sócias da Dume.</strong>
+            </figcaption>
+          </figure>
+        </div>
 
         <div className="about-content reveal">
           <p>
@@ -395,7 +479,9 @@ function Footer() {
         <a className="footer-brand logo-link" href="#inicio">
           <img
             className="logo-image logo-image-footer"
-            src={logoPath}
+            src={footerLogoPath}
+            width={1065}
+            height={634}
             alt="Dume Arquitetura"
           />
         </a>
