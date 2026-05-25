@@ -38,11 +38,6 @@ const services = [
       'Orientação técnica e estética para destravar decisões, qualificar escolhas e conduzir reformas com mais clareza.',
   },
   {
-    title: 'Urbanismo e planejamento',
-    description:
-      'Leituras urbanas, estudos de uso e propostas que conectam escala humana, território e qualidade espacial.',
-  },
-  {
     title: 'Acompanhamento de obra',
     description:
       'Presença técnica para acompanhar etapas, interpretar projeto e proteger a intenção arquitetônica até a entrega.',
