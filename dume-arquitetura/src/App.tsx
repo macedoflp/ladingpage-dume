@@ -107,12 +107,20 @@ function Header() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isMenuOpen])
 
+  useEffect(() => {
+    document.documentElement.classList.toggle('is-nav-open', isMenuOpen)
+    return () => document.documentElement.classList.remove('is-nav-open')
+  }, [isMenuOpen])
+
   function closeMenu() {
     setIsMenuOpen(false)
   }
 
   return (
-    <header className="site-header" aria-label="Cabeçalho principal">
+    <header
+      className={`site-header ${isMenuOpen ? 'is-menu-open' : ''}`}
+      aria-label="Cabeçalho principal"
+    >
       <a
         className="brand logo-link"
         href="#inicio"
@@ -160,6 +168,14 @@ function Header() {
       <a className="header-cta" href="#contato" onClick={closeMenu}>
         Solicitar orçamento
       </a>
+
+      <button
+        className="menu-backdrop"
+        type="button"
+        aria-label="Fechar menu"
+        tabIndex={isMenuOpen ? 0 : -1}
+        onClick={closeMenu}
+      />
     </header>
   )
 }
