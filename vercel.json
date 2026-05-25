@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "cd dume-arquitetura && npm ci",
-  "buildCommand": "cd dume-arquitetura && npm run build",
-  "outputDirectory": "dume-arquitetura/dist"
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist"
 }
