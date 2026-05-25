@@ -2,7 +2,9 @@ import { useEffect, useState, type FormEvent } from 'react'
 import './App.css'
 
 const logoPath = '/imgs/logo.png'
+const headerIconPath = '/imgs/DumeIcone.png'
 const footerLogoPath = '/imgs/logofooter.png'
+const footerIconPath = '/imgs/DumeFooter.svg'
 const heroImage = '/imgs/dume-hero.jpg'
 const heroMobileImage = '/imgs/dume-hero-mobile.jpg'
 const foundersImage = '/imgs/thalia-amanda.jpg'
@@ -122,6 +124,14 @@ function Header() {
         aria-label="Dume Arquitetura"
         onClick={closeMenu}
       >
+        <img
+          className="brand-icon brand-icon-header"
+          src={headerIconPath}
+          width={1050}
+          height={1094}
+          alt=""
+          aria-hidden="true"
+        />
         <img
           className="logo-image logo-image-header"
           src={logoPath}
@@ -434,11 +444,11 @@ function Contact() {
           <div className="contact-details" aria-label="Informações de contato">
             <p>
               <span>Email</span>
-              contato@dumearquitetura.com
+              dumearquitetura03@gmail.com
             </p>
             <p>
               <span>WhatsApp</span>
-              (85) 9 0000-0000
+              (98) 98715-1513
             </p>
             <p>
               <span>Atendimento</span>
@@ -448,7 +458,7 @@ function Contact() {
 
           <a
             className="whatsapp-link"
-            href="https://wa.me/5585900000000?text=Ol%C3%A1%2C%20Dume%20Arquitetura.%20Gostaria%20de%20conversar%20sobre%20um%20projeto."
+            href="https://wa.me/5598987151513?text=Ol%C3%A1%2C%20Dume%20Arquitetura.%20Gostaria%20de%20conversar%20sobre%20um%20projeto."
             target="_blank"
             rel="noreferrer"
           >
@@ -488,6 +498,14 @@ function Footer() {
     <footer className="site-footer">
       <div>
         <a className="footer-brand logo-link" href="#inicio">
+          <img
+            className="brand-icon brand-icon-footer"
+            src={footerIconPath}
+            width={1920}
+            height={1080}
+            alt=""
+            aria-hidden="true"
+          />
           <img
             className="logo-image logo-image-footer"
             src={footerLogoPath}
