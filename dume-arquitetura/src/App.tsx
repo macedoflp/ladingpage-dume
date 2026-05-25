@@ -1,4 +1,4 @@
-import type { FormEvent } from 'react'
+import { useEffect, type FormEvent } from 'react'
 import heroImage from './assets/generated/dume-hero.png'
 import './App.css'
 
@@ -121,7 +121,7 @@ function SectionIntro({
   description?: string
 }) {
   return (
-    <div className="section-intro">
+    <div className="section-intro reveal">
       <p className="eyebrow">{eyebrow}</p>
       <h2>{title}</h2>
       {description ? <p>{description}</p> : null}
@@ -149,17 +149,37 @@ function Hero() {
         </div>
       </div>
 
-      <figure className="hero-media reveal reveal-delay">
-        <img
-          src={heroImage}
-          alt="Interior arquitetônico contemporâneo com madeira, pedra clara e iluminação natural suave"
-        />
-        <figcaption>
-          <span>Residencial</span>
-          <span>Comercial</span>
-          <span>Interiores</span>
-        </figcaption>
-      </figure>
+      <div className="hero-board reveal reveal-delay">
+        <figure className="hero-media">
+          <img
+            src={heroImage}
+            alt="Interior arquitetônico contemporâneo com madeira, pedra clara e iluminação natural suave"
+          />
+        </figure>
+
+        <div className="plan-panel" aria-hidden="true">
+          <span className="plan-kicker">Estudo 01</span>
+          <div className="plan-lines">
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+          <p>luz natural / fluxo / permanência</p>
+        </div>
+
+        <div className="material-strip" aria-label="Paleta de materiais Dume">
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
+
+        <p className="hero-board-caption">
+          Residencial, comercial, interiores e planejamento urbano.
+        </p>
+      </div>
     </section>
   )
 }
@@ -410,6 +430,29 @@ function Footer() {
 }
 
 function App() {
+  useEffect(() => {
+    const animatedElements = document.querySelectorAll<HTMLElement>('.reveal')
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.12 },
+    )
+
+    animatedElements.forEach((element, index) => {
+      element.style.setProperty('--reveal-delay', `${Math.min(index % 5, 4) * 70}ms`)
+      observer.observe(element)
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <>
       <Header />
