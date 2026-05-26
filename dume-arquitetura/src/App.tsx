@@ -5,8 +5,7 @@ const logoPath = '/imgs/logo.png'
 const headerIconPath = '/imgs/DumeIcone.png'
 const footerLogoPath = '/imgs/logofooter.png'
 const footerIconPath = '/imgs/DumeFooter.svg?v=2'
-const heroImage = '/imgs/dume-hero.jpg'
-const heroMobileImage = '/imgs/dume-hero-mobile.jpg'
+const heroImage = '/imgs/projetos/projeto8.jpeg'
 const foundersImage = '/imgs/thalia-amanda.jpg'
 const foundersMobileImage = '/imgs/thalia-amanda-mobile.jpg'
 
@@ -48,32 +47,96 @@ const services = [
 
 const projects = [
   {
-    title: 'Casa Brisa',
+    title: 'Sala multifuncional',
     category: 'Residencial',
     description:
-      'Volumes calmos, luz natural e matéria-prima acolhedora em uma casa desenhada para encontros cotidianos.',
-    visual: 'home',
+      'Sala integrada a estação de trabalho, marcenaria planejada e pontos de cor para acolher descanso, estudo e rotina.',
+    cover: '/imgs/projetos/projeto8.jpeg',
+    coverAlt:
+      'Sala residencial com sofá claro, estante em marcenaria, estação de trabalho e parede verde suave',
+    photos: [
+      {
+        src: '/imgs/projetos/projeto8.jpeg',
+        alt: 'Vista da sala com sofá, estante, mesa de trabalho e painel de TV',
+      },
+      {
+        src: '/imgs/projetos/projeto9.jpeg',
+        alt: 'Vista da sala integrada com mesa redonda, painel de TV e porta em madeira',
+      },
+    ],
   },
   {
-    title: 'Atelier Nativa',
+    title: 'Consultório Sâmia Silva',
     category: 'Comercial',
     description:
-      'Uma experiência de marca traduzida em circulação fluida, pontos de destaque e materiais de presença tátil.',
-    visual: 'studio',
+      'Projeto de interiores para atendimento odontológico com recepção delicada, áreas técnicas claras e linguagem acolhedora.',
+    cover: '/imgs/projetos/projeto4.jpeg',
+    coverAlt:
+      'Consultório odontológico com mesa branca, luminária pendente dourada e painel em madeira',
+    photos: [
+      {
+        src: '/imgs/projetos/projeto4.jpeg',
+        alt: 'Sala de atendimento do consultório com mesa branca e luminária pendente',
+      },
+      {
+        src: '/imgs/projetos/projeto1.jpeg',
+        alt: 'Área de espera estreita com painel de madeira, poltronas e iluminação linear',
+      },
+      {
+        src: '/imgs/projetos/projeto2.jpeg',
+        alt: 'Área clínica com bancada branca, armários e janela com persiana',
+      },
+      {
+        src: '/imgs/projetos/projeto3.jpeg',
+        alt: 'Consultório odontológico com cadeira clínica e divisória em madeira',
+      },
+      {
+        src: '/imgs/projetos/projeto5.jpeg',
+        alt: 'Marcenaria branca com nichos, gaveteiro e espelho orgânico no consultório',
+      },
+    ],
   },
   {
-    title: 'Apartamento Aurora',
+    title: 'Cozinha e gourmet',
+    category: 'Residencial',
+    description:
+      'Ambientes compactos com marcenaria sob medida, bancada funcional e materiais resistentes para uso diário.',
+    cover: '/imgs/projetos/projeto7.jpeg',
+    coverAlt:
+      'Cozinha compacta com armários verdes, bancada preta, madeira clara e pendentes naturais',
+    photos: [
+      {
+        src: '/imgs/projetos/projeto7.jpeg',
+        alt: 'Cozinha compacta com armários verdes, bancada preta e geladeira inox',
+      },
+      {
+        src: '/imgs/projetos/projeto10.jpeg',
+        alt: 'Área de apoio com armários brancos, prateleiras em madeira e máquina de lavar',
+      },
+      {
+        src: '/imgs/projetos/projeto6.jpeg',
+        alt: 'Espaço gourmet com bancada, churrasqueira em tijolinho e pergolado de madeira',
+      },
+    ],
+  },
+  {
+    title: 'Quarto infantil Liz',
     category: 'Interiores',
     description:
-      'Intervenção delicada com marcenaria sob medida, tons terrosos e composição luminosa para ampliar a sensação de abrigo.',
-    visual: 'apartment',
-  },
-  {
-    title: 'Praça Viva',
-    category: 'Urbanismo',
-    description:
-      'Estudo de permanência e sombra para costurar percurso, escala humana e convivência em um espaço público.',
-    visual: 'urban',
+      'Quarto lúdico com marcenaria leve, bancada de estudos, brinquedoteca e uma paleta suave para acompanhar a infância.',
+    cover: '/imgs/projetos/projeto11.jpg',
+    coverAlt:
+      'Quarto infantil em tons suaves com bancada, cadeira em formato de flor, brinquedos e cortina clara',
+    photos: [
+      {
+        src: '/imgs/projetos/projeto11.jpg',
+        alt: 'Quarto infantil com bancada de estudos, nichos, brinquedos e cortina clara',
+      },
+      {
+        src: '/imgs/projetos/projeto12.jpg',
+        alt: 'Parede lúdica do quarto infantil com casinha decorativa, flores e mobiliário rosa',
+      },
+    ],
   },
 ]
 
@@ -227,13 +290,12 @@ function Hero() {
         <figure className="hero-media">
           <img
             src={heroImage}
-            srcSet={`${heroMobileImage} 960w, ${heroImage} 1536w`}
             sizes="(max-width: 760px) calc(100vw - 36px), (max-width: 1100px) calc(100vw - 44px), 690px"
-            width={1536}
-            height={1024}
+            width={1280}
+            height={720}
             decoding="async"
             fetchPriority="high"
-            alt="Interior arquitetônico contemporâneo com madeira, pedra clara e iluminação natural suave"
+            alt="Sala residencial projetada pela Dume com sofá claro, estante planejada, estação de trabalho e parede verde suave"
           />
         </figure>
 
@@ -346,29 +408,14 @@ function Services() {
   )
 }
 
-function ProjectVisual({ type, title }: { type: string; title: string }) {
-  return (
-    <div
-      className={`project-visual project-visual-${type}`}
-      role="img"
-      aria-label={`Composição visual placeholder do projeto ${title}`}
-    >
-      <span className="visual-wall" />
-      <span className="visual-window" />
-      <span className="visual-object visual-object-one" />
-      <span className="visual-object visual-object-two" />
-    </div>
-  )
-}
-
 function Portfolio() {
   return (
     <section className="page-section portfolio-section" id="projetos">
       <div className="portfolio-heading">
         <SectionIntro
           eyebrow="Portfólio"
-          title="Estudos visuais para apresentar a linguagem do escritório."
-          description="Placeholders elegantes ocupam o espaço das imagens reais até que os projetos fotografados sejam inseridos."
+          title="Projetos reais com identidade, detalhe e presença."
+          description="Uma seleção de ambientes desenvolvidos pela Dume em diferentes escalas, do comercial ao residencial."
         />
         <a className="text-link" href="#contato">
           Solicitar apresentação completa
@@ -378,11 +425,34 @@ function Portfolio() {
       <div className="portfolio-grid">
         {projects.map((project) => (
           <article className="project-card reveal" key={project.title}>
-            <ProjectVisual type={project.visual} title={project.title} />
+            <figure className="project-media">
+              <img
+                src={project.cover}
+                width={1280}
+                height={900}
+                loading="lazy"
+                decoding="async"
+                alt={project.coverAlt}
+              />
+              <figcaption>{project.photos.length} fotos</figcaption>
+            </figure>
             <div className="project-card-body">
               <span>{project.category}</span>
               <h3>{project.title}</h3>
               <p>{project.description}</p>
+              <div className="project-photo-strip" aria-label={`Fotos do projeto ${project.title}`}>
+                {project.photos.map((photo) => (
+                  <img
+                    key={photo.src}
+                    src={photo.src}
+                    width={320}
+                    height={320}
+                    loading="lazy"
+                    decoding="async"
+                    alt={photo.alt}
+                  />
+                ))}
+              </div>
             </div>
           </article>
         ))}
