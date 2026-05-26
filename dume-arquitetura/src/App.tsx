@@ -318,9 +318,6 @@ function Hero() {
           <span />
         </div>
 
-        <p className="hero-board-caption">
-          Residencial, comercial, interiores e planejamento urbano.
-        </p>
       </div>
     </section>
   )
@@ -596,15 +593,15 @@ function Footer() {
       </nav>
 
       <div className="social-links" aria-label="Redes sociais">
-        <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">
+        <a href="https://www.instagram.com/dume.arquitetura/" target="_blank" rel="noreferrer">
           Instagram
         </a>
-        <a href="https://www.behance.net/" target="_blank" rel="noreferrer">
+        {/* <a href="https://www.behance.net/" target="_blank" rel="noreferrer">
           Behance
         </a>
         <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">
           LinkedIn
-        </a>
+        </a> */}
       </div>
 
       <p className="credits">
