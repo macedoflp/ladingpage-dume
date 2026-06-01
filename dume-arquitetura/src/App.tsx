@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 const logoPath = '/imgs/logo.png'
@@ -348,11 +348,11 @@ function About() {
                 height={1002}
                 loading="lazy"
                 decoding="async"
-                alt="Thalia Melônio e Amanda Duarte, arquitetas e urbanistas da Dume Arquitetura"
+                alt="Amanda Duarte e Thalia Melônio, arquitetas e urbanistas da Dume Arquitetura"
               />
             </picture>
             <figcaption>
-              <span>Thalia Melônio e Amanda Duarte</span>
+              <span>Amanda Duarte e Thalia Melônio</span>
               <strong>Arquitetas, urbanistas e sócias da Dume.</strong>
             </figcaption>
           </figure>
@@ -370,11 +370,11 @@ function About() {
           <div className="founders" aria-label="Arquitetas responsáveis">
             <article>
               <span>Arquiteta e urbanista</span>
-              <h3>Thalia Melônio</h3>
+              <h3>Amanda Duarte</h3>
             </article>
             <article>
               <span>Arquiteta e urbanista</span>
-              <h3>Amanda Duarte</h3>
+              <h3>Thalia Melônio</h3>
             </article>
           </div>
         </div>
@@ -494,67 +494,79 @@ function EmotionalCallout() {
 }
 
 function Contact() {
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-  }
+  const whatsappHref =
+    'https://wa.me/5598987151513?text=Ol%C3%A1%2C%20Dume%20Arquitetura.%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20um%20projeto.'
 
   return (
     <section className="page-section contact-section" id="contato">
       <div className="contact-grid">
-        <div>
+        <div className="contact-copy">
           <SectionIntro
             eyebrow="Contato"
-            title="Vamos transformar sua ideia em projeto?"
-            description="Conte um pouco sobre o espaço que você imagina. A Dume retorna com o próximo passo para iniciar a conversa."
+            title="Solicite seu orçamento pelo WhatsApp."
+            description="Uma conversa direta para entender seu espaço, sua rotina e o tipo de projeto que você deseja iniciar."
           />
 
           <div className="contact-details" aria-label="Informações de contato">
             <p>
-              <span>Email</span>
-              dumearquitetura03@gmail.com
+              <span>Canal principal</span>
+              <a href={whatsappHref} target="_blank" rel="noreferrer">
+                WhatsApp: (98) 98715-1513
+              </a>
             </p>
             <p>
-              <span>WhatsApp</span>
-              (98) 98715-1513
+              <span>Email</span>
+              <a href="mailto:dumearquitetura03@gmail.com">
+                dumearquitetura03@gmail.com
+              </a>
             </p>
             <p>
               <span>Atendimento</span>
               Projetos residenciais, comerciais e urbanos
             </p>
           </div>
+        </div>
+
+        <aside
+          className="contact-whatsapp-panel reveal"
+          aria-label="Solicitar orçamento pelo WhatsApp"
+        >
+          <div>
+            <p className="eyebrow">Orçamento direto</p>
+            <h3>Conte sua ideia e receba o próximo passo da Dume.</h3>
+            <p className="whatsapp-panel-text">
+              O atendimento começa em uma conversa objetiva, com espaço para
+              compartilhar referências, medidas, localização e o momento atual
+              do seu projeto.
+            </p>
+          </div>
+
+          <ul className="contact-benefits" aria-label="Etapas iniciais do atendimento">
+            <li>
+              <span>01</span>
+              Briefing inicial pelo WhatsApp
+            </li>
+            <li>
+              <span>02</span>
+              Direcionamento para o melhor serviço
+            </li>
+            <li>
+              <span>03</span>
+              Próximos passos para orçamento
+            </li>
+          </ul>
 
           <a
-            className="whatsapp-link"
-            href="https://wa.me/5598987151513?text=Ol%C3%A1%2C%20Dume%20Arquitetura.%20Gostaria%20de%20conversar%20sobre%20um%20projeto."
+            className="whatsapp-link whatsapp-link-strong"
+            href={whatsappHref}
             target="_blank"
             rel="noreferrer"
           >
-            Conversar pelo WhatsApp
+            Solicitar orçamento no WhatsApp
           </a>
-        </div>
 
-        <form className="contact-form reveal" onSubmit={handleSubmit}>
-          <label htmlFor="name">Nome</label>
-          <input id="name" name="name" type="text" autoComplete="name" />
-
-          <label htmlFor="email">Email</label>
-          <input id="email" name="email" type="email" autoComplete="email" />
-
-          <label htmlFor="phone">Telefone</label>
-          <input id="phone" name="phone" type="tel" autoComplete="tel" />
-
-          <label htmlFor="message">Mensagem</label>
-          <textarea
-            id="message"
-            name="message"
-            rows={5}
-            placeholder="Fale sobre seu projeto, cidade, prazo ou etapa atual."
-          />
-
-          <button className="button button-primary" type="submit">
-            Enviar mensagem
-          </button>
-        </form>
+          <p className="whatsapp-note">Atendimento pelo número (98) 98715-1513</p>
+        </aside>
       </div>
     </section>
   )
