@@ -544,7 +544,7 @@ function Contact() {
           <ul className="contact-benefits" aria-label="Etapas iniciais do atendimento">
             <li>
               <span>01</span>
-              Briefing inicial pelo WhatsApp
+              Contato inicial pelo WhatsApp
             </li>
             <li>
               <span>02</span>
