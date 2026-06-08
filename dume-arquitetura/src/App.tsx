@@ -319,18 +319,6 @@ function Hero() {
           />
         </figure>
 
-        <div className="plan-panel" aria-hidden="true">
-          <span className="plan-kicker">Estudo 01</span>
-          <div className="plan-lines">
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
-          <p>luz natural / fluxo / permanência</p>
-        </div>
-
         <div className="material-strip" aria-label="Paleta de materiais Dume">
           <span />
           <span />
