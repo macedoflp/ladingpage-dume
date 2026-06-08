@@ -6,6 +6,10 @@
   overflow: hidden;
 }
 
+:root.is-lightbox-open {
+  overflow: hidden;
+}
+
 .site-header {
   align-items: center;
   backdrop-filter: blur(18px);
@@ -811,6 +815,29 @@
   position: absolute;
 }
 
+.project-image-button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: zoom-in;
+  display: block;
+  font: inherit;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  text-align: inherit;
+  width: 100%;
+}
+
+.project-media-button {
+  height: 100%;
+}
+
+.project-image-button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -5px;
+}
+
 .project-media img {
   background: var(--color-pastel);
   filter: saturate(0.86) contrast(1.02) sepia(0.04);
@@ -858,14 +885,109 @@
   margin-top: 18px;
 }
 
-.project-photo-strip img {
+.project-photo-button {
   aspect-ratio: 1;
   border: 1px solid rgba(72, 39, 32, 0.14);
+  background: var(--color-pastel);
+  height: 100%;
+}
+
+.project-photo-button img {
   filter: saturate(0.82) contrast(1.02);
   height: 100%;
   object-fit: cover;
   object-position: center;
+  transition: filter 220ms ease, transform 260ms ease;
   width: 100%;
+}
+
+.project-photo-button:hover img,
+.project-photo-button:focus-visible img {
+  filter: saturate(0.98) contrast(1.04);
+  transform: scale(1.06);
+}
+
+.portfolio-lightbox {
+  background: rgba(25, 29, 22, 0.9);
+  display: grid;
+  inset: 0;
+  padding: clamp(24px, 5vw, 54px);
+  place-items: center;
+  position: fixed;
+  z-index: 60;
+}
+
+.portfolio-lightbox-content {
+  display: grid;
+  max-height: calc(100svh - 48px);
+  position: relative;
+  width: min(1120px, 100%);
+}
+
+.portfolio-lightbox-close {
+  align-items: center;
+  appearance: none;
+  background: var(--color-light);
+  border: 1px solid rgba(238, 231, 220, 0.56);
+  color: var(--color-brown);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 1.6rem;
+  font-weight: 600;
+  height: 44px;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: -58px;
+  transition: background-color 220ms ease, color 220ms ease, transform 220ms ease;
+  width: 44px;
+  z-index: 2;
+}
+
+.portfolio-lightbox-close:hover,
+.portfolio-lightbox-close:focus-visible {
+  background: var(--color-pastel);
+  color: var(--color-brown);
+  outline: 0;
+  transform: translateY(-2px);
+}
+
+.portfolio-lightbox-figure {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+}
+
+.portfolio-lightbox-figure img {
+  background: var(--color-brown);
+  border: 1px solid rgba(238, 231, 220, 0.24);
+  display: block;
+  max-height: calc(100svh - 168px);
+  object-fit: contain;
+  width: 100%;
+}
+
+.portfolio-lightbox-figure figcaption {
+  color: rgba(238, 231, 220, 0.82);
+  display: grid;
+  gap: 6px;
+}
+
+.portfolio-lightbox-figure span {
+  color: var(--color-pastel);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.portfolio-lightbox-figure p {
+  font-size: 0.94rem;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .differentials-section {
@@ -1011,6 +1133,14 @@
   color: var(--color-accent);
 }
 
+.contact-phone-link {
+  display: block;
+}
+
+.contact-phone-link + .contact-phone-link {
+  margin-top: 6px;
+}
+
 .whatsapp-link {
   margin-top: 30px;
 }
@@ -1018,11 +1148,7 @@
 .contact-whatsapp-panel {
   align-content: space-between;
   align-self: stretch;
-  background:
-    linear-gradient(rgba(238, 231, 220, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(238, 231, 220, 0.08) 1px, transparent 1px),
-    linear-gradient(135deg, var(--color-green), var(--color-brown));
-  background-size: 46px 46px, 46px 46px, auto;
+  background: var(--color-green);
   color: var(--color-light);
   display: grid;
   gap: 30px;
@@ -1556,6 +1682,28 @@
   .project-card:first-child .project-media,
   .project-media {
     aspect-ratio: 16 / 11;
+  }
+
+  .portfolio-lightbox {
+    padding: 16px;
+  }
+
+  .portfolio-lightbox-content {
+    max-height: calc(100svh - 32px);
+  }
+
+  .portfolio-lightbox-close {
+    background: rgba(238, 231, 220, 0.92);
+    right: 10px;
+    top: 10px;
+  }
+
+  .portfolio-lightbox-figure {
+    gap: 12px;
+  }
+
+  .portfolio-lightbox-figure img {
+    max-height: calc(100svh - 148px);
   }
 
   .emotional-section {

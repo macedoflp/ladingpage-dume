@@ -45,6 +45,15 @@ const services = [
   },
 ]
 
+type PortfolioPhoto = {
+  src: string
+  alt: string
+}
+
+type SelectedPortfolioPhoto = PortfolioPhoto & {
+  projectTitle: string
+}
+
 const projects = [
   {
     title: 'Sala multifuncional',
@@ -97,10 +106,10 @@ const projects = [
     ],
   },
   {
-    title: 'Cozinha e gourmet',
+    title: 'Cozinha',
     category: 'Residencial',
     description:
-      'Ambientes compactos com marcenaria sob medida, bancada funcional e materiais resistentes para uso diário.',
+      'Cozinha compacta com marcenaria sob medida, bancada funcional e materiais resistentes para uso diário.',
     cover: '/imgs/projetos/projeto7.jpeg',
     coverAlt:
       'Cozinha compacta com armários verdes, bancada preta, madeira clara e pendentes naturais',
@@ -113,6 +122,17 @@ const projects = [
         src: '/imgs/projetos/projeto10.jpeg',
         alt: 'Área de apoio com armários brancos, prateleiras em madeira e máquina de lavar',
       },
+    ],
+  },
+  {
+    title: 'Área Gourmet',
+    category: 'Residencial',
+    description:
+      'Espaço gourmet com bancada de apoio, churrasqueira em tijolinho e pergolado de madeira para receber com conforto.',
+    cover: '/imgs/projetos/projeto6.jpeg',
+    coverAlt:
+      'Espaço gourmet com bancada, churrasqueira em tijolinho e pergolado de madeira',
+    photos: [
       {
         src: '/imgs/projetos/projeto6.jpeg',
         alt: 'Espaço gourmet com bancada, churrasqueira em tijolinho e pergolado de madeira',
@@ -406,6 +426,37 @@ function Services() {
 }
 
 function Portfolio() {
+  const [selectedPhoto, setSelectedPhoto] = useState<SelectedPortfolioPhoto | null>(null)
+
+  useEffect(() => {
+    if (!selectedPhoto) {
+      document.documentElement.classList.remove('is-lightbox-open')
+      return
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setSelectedPhoto(null)
+      }
+    }
+
+    document.documentElement.classList.add('is-lightbox-open')
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.documentElement.classList.remove('is-lightbox-open')
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [selectedPhoto])
+
+  function openPortfolioPhoto(photo: PortfolioPhoto, projectTitle: string) {
+    setSelectedPhoto({ ...photo, projectTitle })
+  }
+
+  function closePortfolioPhoto() {
+    setSelectedPhoto(null)
+  }
+
   return (
     <section className="page-section portfolio-section" id="projetos">
       <div className="portfolio-heading">
@@ -423,14 +474,26 @@ function Portfolio() {
         {projects.map((project) => (
           <article className="project-card reveal" key={project.title}>
             <figure className="project-media">
-              <img
-                src={project.cover}
-                width={1280}
-                height={900}
-                loading="lazy"
-                decoding="async"
-                alt={project.coverAlt}
-              />
+              <button
+                className="project-image-button project-media-button"
+                type="button"
+                aria-label={`Ampliar imagem do projeto ${project.title}`}
+                onClick={() =>
+                  openPortfolioPhoto(
+                    { src: project.cover, alt: project.coverAlt },
+                    project.title,
+                  )
+                }
+              >
+                <img
+                  src={project.cover}
+                  width={1280}
+                  height={900}
+                  loading="lazy"
+                  decoding="async"
+                  alt={project.coverAlt}
+                />
+              </button>
               <figcaption>{project.photos.length} fotos</figcaption>
             </figure>
             <div className="project-card-body">
@@ -439,21 +502,66 @@ function Portfolio() {
               <p>{project.description}</p>
               <div className="project-photo-strip" aria-label={`Fotos do projeto ${project.title}`}>
                 {project.photos.map((photo) => (
-                  <img
+                  <button
                     key={photo.src}
-                    src={photo.src}
-                    width={320}
-                    height={320}
-                    loading="lazy"
-                    decoding="async"
-                    alt={photo.alt}
-                  />
+                    className="project-image-button project-photo-button"
+                    type="button"
+                    aria-label={`Ampliar foto do projeto ${project.title}`}
+                    onClick={() => openPortfolioPhoto(photo, project.title)}
+                  >
+                    <img
+                      src={photo.src}
+                      width={320}
+                      height={320}
+                      loading="lazy"
+                      decoding="async"
+                      alt={photo.alt}
+                    />
+                  </button>
                 ))}
               </div>
             </div>
           </article>
         ))}
       </div>
+
+      {selectedPhoto ? (
+        <div
+          className="portfolio-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Foto ampliada de ${selectedPhoto.projectTitle}`}
+          onClick={closePortfolioPhoto}
+        >
+          <div
+            className="portfolio-lightbox-content"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              className="portfolio-lightbox-close"
+              type="button"
+              aria-label="Fechar visualização expandida"
+              onClick={closePortfolioPhoto}
+              autoFocus
+            >
+              ×
+            </button>
+            <figure className="portfolio-lightbox-figure">
+              <img
+                src={selectedPhoto.src}
+                alt={selectedPhoto.alt}
+                width={1600}
+                height={1200}
+                decoding="async"
+              />
+              <figcaption>
+                <span>{selectedPhoto.projectTitle}</span>
+                <p>{selectedPhoto.alt}</p>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      ) : null}
     </section>
   )
 }
@@ -494,8 +602,12 @@ function EmotionalCallout() {
 }
 
 function Contact() {
+  const whatsappMessage =
+    'Ol%C3%A1%2C%20Dume%20Arquitetura.%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20um%20projeto.'
   const whatsappHref =
-    'https://wa.me/5598987151513?text=Ol%C3%A1%2C%20Dume%20Arquitetura.%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20um%20projeto.'
+    `https://wa.me/5598987151513?text=${whatsappMessage}`
+  const secondaryWhatsappHref =
+    `https://wa.me/5598981404014?text=${whatsappMessage}`
 
   return (
     <section className="page-section contact-section" id="contato">
@@ -509,9 +621,22 @@ function Contact() {
 
           <div className="contact-details" aria-label="Informações de contato">
             <p>
-              <span>Canal principal</span>
-              <a href={whatsappHref} target="_blank" rel="noreferrer">
+              <span>WhatsApp</span>
+              <a
+                className="contact-phone-link"
+                href={whatsappHref}
+                target="_blank"
+                rel="noreferrer"
+              >
                 WhatsApp: (98) 98715-1513
+              </a>
+              <a
+                className="contact-phone-link"
+                href={secondaryWhatsappHref}
+                target="_blank"
+                rel="noreferrer"
+              >
+                WhatsApp: (98) 98140-4014
               </a>
             </p>
             <p>
@@ -565,7 +690,9 @@ function Contact() {
             Solicitar orçamento no WhatsApp
           </a>
 
-          <p className="whatsapp-note">Atendimento pelo número (98) 98715-1513</p>
+          <p className="whatsapp-note">
+            Atendimento pelos números (98) 98715-1513 e (98) 98140-4014
+          </p>
         </aside>
       </div>
     </section>
