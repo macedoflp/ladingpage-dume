@@ -5,7 +5,6 @@ const logoPath = '/imgs/logo.png'
 const headerIconPath = '/imgs/DumeIcone.png'
 const footerLogoPath = '/imgs/logofooter.png'
 const footerIconPath = '/imgs/DumeFooter.svg?v=2'
-const heroImage = '/imgs/projetos/projeto8.jpeg'
 const foundersImage = '/imgs/thalia-amanda.jpg'
 const foundersMobileImage = '/imgs/thalia-amanda-mobile.jpg'
 
@@ -51,6 +50,10 @@ type PortfolioPhoto = {
 }
 
 type SelectedPortfolioPhoto = PortfolioPhoto & {
+  projectTitle: string
+}
+
+type HeroSlide = PortfolioPhoto & {
   projectTitle: string
 }
 
@@ -159,6 +162,13 @@ const projects = [
     ],
   },
 ]
+
+const heroSlides: HeroSlide[] = projects.flatMap((project) =>
+  project.photos.map((photo) => ({
+    ...photo,
+    projectTitle: project.title,
+  })),
+)
 
 const differentials = [
   'Projetos personalizados',
@@ -287,6 +297,38 @@ function SectionIntro({
 }
 
 function Hero() {
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0)
+  const [isCarouselPaused, setIsCarouselPaused] = useState(false)
+  const activeSlide = heroSlides[activeSlideIndex]
+
+  useEffect(() => {
+    if (isCarouselPaused || heroSlides.length <= 1) {
+      return
+    }
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    if (reducedMotion.matches) {
+      return
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveSlideIndex((currentIndex) => (currentIndex + 1) % heroSlides.length)
+    }, 5200)
+
+    return () => window.clearInterval(intervalId)
+  }, [isCarouselPaused])
+
+  function showPreviousSlide() {
+    setActiveSlideIndex((currentIndex) =>
+      currentIndex === 0 ? heroSlides.length - 1 : currentIndex - 1,
+    )
+  }
+
+  function showNextSlide() {
+    setActiveSlideIndex((currentIndex) => (currentIndex + 1) % heroSlides.length)
+  }
+
   return (
     <section className="hero-section" id="inicio">
       <div className="hero-copy reveal">
@@ -306,26 +348,76 @@ function Hero() {
         </div>
       </div>
 
-      <div className="hero-board reveal reveal-delay">
-        <figure className="hero-media">
-          <img
-            src={heroImage}
-            sizes="(max-width: 760px) calc(100vw - 36px), (max-width: 1100px) calc(100vw - 44px), 690px"
-            width={1280}
-            height={720}
-            decoding="async"
-            fetchPriority="high"
-            alt="Sala residencial projetada pela Dume com sofá claro, estante planejada, estação de trabalho e parede verde suave"
-          />
-        </figure>
+      <div
+        className="hero-board reveal reveal-delay"
+        aria-label="Carrossel de projetos em destaque"
+        onBlur={(event) => {
+          const nextTarget = event.relatedTarget
 
-        <div className="material-strip" aria-label="Paleta de materiais Dume">
-          <span />
-          <span />
-          <span />
-          <span />
+          if (!(nextTarget instanceof Node) || !event.currentTarget.contains(nextTarget)) {
+            setIsCarouselPaused(false)
+          }
+        }}
+        onFocus={() => setIsCarouselPaused(true)}
+        onMouseEnter={() => setIsCarouselPaused(true)}
+        onMouseLeave={() => setIsCarouselPaused(false)}
+      >
+        <div className="hero-carousel" aria-live="polite">
+          {heroSlides.map((slide, index) => (
+            <figure
+              className={`hero-media ${index === activeSlideIndex ? 'is-active' : ''}`}
+              key={`${slide.projectTitle}-${slide.src}`}
+              aria-hidden={index !== activeSlideIndex}
+            >
+              <img
+                src={slide.src}
+                sizes="(max-width: 760px) calc(100vw - 36px), (max-width: 1100px) calc(100vw - 44px), 690px"
+                width={1280}
+                height={720}
+                loading={index === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                fetchPriority={index === 0 ? 'high' : 'auto'}
+                alt={slide.alt}
+              />
+            </figure>
+          ))}
         </div>
 
+        <div className="hero-carousel-meta">
+          <strong>{activeSlide.projectTitle}</strong>
+        </div>
+
+        <div className="hero-carousel-controls" aria-label="Controles do carrossel">
+          <button
+            className="hero-carousel-control"
+            type="button"
+            aria-label="Imagem anterior"
+            onClick={showPreviousSlide}
+          >
+            <span aria-hidden="true">‹</span>
+          </button>
+          <button
+            className="hero-carousel-control"
+            type="button"
+            aria-label="Próxima imagem"
+            onClick={showNextSlide}
+          >
+            <span aria-hidden="true">›</span>
+          </button>
+        </div>
+
+        <div className="hero-carousel-dots" aria-label="Selecionar imagem do carrossel">
+          {heroSlides.map((slide, index) => (
+            <button
+              className={index === activeSlideIndex ? 'is-active' : ''}
+              type="button"
+              key={`${slide.src}-dot`}
+              aria-current={index === activeSlideIndex}
+              aria-label={`Mostrar ${slide.projectTitle}, imagem ${index + 1}`}
+              onClick={() => setActiveSlideIndex(index)}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )
