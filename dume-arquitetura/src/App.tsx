@@ -1,3 +1,4 @@
+import { Analytics, track } from '@vercel/analytics/react'
 import { useEffect, useState } from 'react'
 import './App.css'
 
@@ -179,6 +180,14 @@ const differentials = [
   'Elegância nos detalhes',
 ]
 
+function trackCtaClick(location: string, destination: string) {
+  track('CTA Clicked', { location, destination })
+}
+
+function trackContactClick(location: string, channel: string) {
+  track('Contact Clicked', { location, channel })
+}
+
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -253,17 +262,38 @@ function Header() {
         aria-label="Navegação principal"
       >
         {navLinks.map((link) => (
-          <a key={link.href} href={link.href} onClick={closeMenu}>
+          <a
+            key={link.href}
+            href={link.href}
+            onClick={() => {
+              track('Navigation Clicked', { label: link.label })
+              closeMenu()
+            }}
+          >
             {link.label}
           </a>
         ))}
 
-        <a className="mobile-nav-cta" href="#contato" onClick={closeMenu}>
+        <a
+          className="mobile-nav-cta"
+          href="#contato"
+          onClick={() => {
+            trackCtaClick('Mobile navigation', 'contact')
+            closeMenu()
+          }}
+        >
           Solicitar orçamento
         </a>
       </nav>
 
-      <a className="header-cta" href="#contato" onClick={closeMenu}>
+      <a
+        className="header-cta"
+        href="#contato"
+        onClick={() => {
+          trackCtaClick('Header', 'contact')
+          closeMenu()
+        }}
+      >
         Solicitar orçamento
       </a>
 
@@ -339,10 +369,18 @@ function Hero() {
           sensibilidade para transformar ideias em ambientes com identidade.
         </p>
         <div className="hero-actions" aria-label="Ações principais">
-          <a className="button button-primary" href="#projetos">
+          <a
+            className="button button-primary"
+            href="#projetos"
+            onClick={() => trackCtaClick('Hero', 'projects')}
+          >
             Conheça nossos projetos
           </a>
-          <a className="button button-secondary" href="#contato">
+          <a
+            className="button button-secondary"
+            href="#contato"
+            onClick={() => trackCtaClick('Hero', 'contact')}
+          >
             Fale conosco
           </a>
         </div>
@@ -530,6 +568,7 @@ function Portfolio() {
   }, [selectedPhoto])
 
   function openPortfolioPhoto(photo: PortfolioPhoto, projectTitle: string) {
+    track('Portfolio Photo Opened', { project: projectTitle })
     setSelectedPhoto({ ...photo, projectTitle })
   }
 
@@ -545,7 +584,11 @@ function Portfolio() {
           title="Projetos reais com identidade, detalhe e presença."
           description="Uma seleção de ambientes desenvolvidos pela Dume em diferentes escalas, do comercial ao residencial."
         />
-        <a className="text-link" href="#contato">
+        <a
+          className="text-link"
+          href="#contato"
+          onClick={() => trackCtaClick('Portfolio', 'contact')}
+        >
           Solicitar apresentação completa
         </a>
       </div>
@@ -673,7 +716,11 @@ function EmotionalCallout() {
       <div className="emotional-content reveal">
         <p className="script-line">Cada espaço conta uma história.</p>
         <h2>A nossa missão é projetar a sua.</h2>
-        <a className="button button-light" href="#contato">
+        <a
+          className="button button-light"
+          href="#contato"
+          onClick={() => trackCtaClick('Emotional callout', 'contact')}
+        >
           Começar um projeto
         </a>
       </div>
@@ -707,6 +754,7 @@ function Contact() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => trackContactClick('Contact details', 'whatsapp-primary')}
               >
                 WhatsApp: (98) 98715-1513
               </a>
@@ -715,13 +763,17 @@ function Contact() {
                 href={secondaryWhatsappHref}
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => trackContactClick('Contact details', 'whatsapp-secondary')}
               >
                 WhatsApp: (98) 98140-4014
               </a>
             </p>
             <p>
               <span>Email</span>
-              <a href="mailto:dumearquitetura03@gmail.com">
+              <a
+                href="mailto:dumearquitetura03@gmail.com"
+                onClick={() => trackContactClick('Contact details', 'email')}
+              >
                 dumearquitetura03@gmail.com
               </a>
             </p>
@@ -766,6 +818,7 @@ function Contact() {
             href={whatsappHref}
             target="_blank"
             rel="noreferrer"
+            onClick={() => trackContactClick('Contact panel', 'whatsapp-primary')}
           >
             Solicitar orçamento no WhatsApp
           </a>
@@ -812,7 +865,12 @@ function Footer() {
       </nav>
 
       <div className="social-links" aria-label="Redes sociais">
-        <a href="https://www.instagram.com/dume.arquitetura/" target="_blank" rel="noreferrer">
+        <a
+          href="https://www.instagram.com/dume.arquitetura/"
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => trackContactClick('Footer', 'instagram')}
+        >
           Instagram
         </a>
         {/* <a href="https://www.behance.net/" target="_blank" rel="noreferrer">
@@ -867,6 +925,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
+      <Analytics />
     </>
   )
 }
