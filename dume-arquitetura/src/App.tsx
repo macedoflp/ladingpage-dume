@@ -946,7 +946,7 @@ function Portfolio() {
         >
           {filteredProjects.map((project, index) => (
             <article
-              className="showcase-card reveal"
+              className="showcase-card is-visible"
               key={project.title}
               onClick={() => setCurrentSlide(index)}
             >
