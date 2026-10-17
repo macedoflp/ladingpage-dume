@@ -1,5 +1,5 @@
 import { Analytics, track } from '@vercel/analytics/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
 const logoPath = '/imgs/logo.png'
@@ -8,41 +8,111 @@ const footerLogoPath = '/imgs/logofooter.png'
 const footerIconPath = '/imgs/DumeFooter.svg?v=2'
 const foundersImage = '/imgs/thalia-amanda.jpg'
 const foundersMobileImage = '/imgs/thalia-amanda-mobile.jpg'
+const heroMainImage = '/imgs/dume-hero.jpg'
+const heroMainMobileImage = '/imgs/dume-hero-mobile.jpg'
 
 const navLinks = [
   { label: 'Início', href: '#inicio' },
-  { label: 'Sobre', href: '#sobre' },
+  { label: 'Escritório', href: '#sobre' },
   { label: 'Projetos', href: '#projetos' },
-  { label: 'Serviços', href: '#servicos' },
+  { label: 'Atuação', href: '#servicos' },
+  { label: 'Processo', href: '#processo' },
   { label: 'Dúvidas', href: '#faq' },
   { label: 'Contato', href: '#contato' },
+]
+
+const heroPillars = [
+  {
+    label: 'Projetos Autorais',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <path d="M12 3L3 8l9 5 9-5-9-5z" />
+        <path d="M3 16l9 5 9-5" />
+        <path d="M3 12l9 5 9-5" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Curadoria de Materiais',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Escuta Exclusiva',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <path d="M9 12l2 2 4-4" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Estética Atemporal',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 3v18" />
+        <path d="M3 12h18" />
+      </svg>
+    ),
+  },
+  {
+    label: 'Atenção aos Detalhes',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M8.5 12.5l2.5 2.5 4.5-5" />
+      </svg>
+    ),
+  },
 ]
 
 const services = [
   {
     title: 'Projetos residenciais',
+    tag: 'Arquitetura & Morar',
+    image: '/imgs/projetos/projeto8.jpeg',
+    imageAlt: 'Sala residencial integrada projetada pela Dume Arquitetura',
     description:
       'Casas e apartamentos pensados para acolher a rotina, preservar memória afetiva e revelar o modo de viver de cada cliente.',
   },
   {
     title: 'Projetos comerciais',
+    tag: 'Clínicas, Lojas & Corporativo',
+    image: '/imgs/projetos/projeto4.jpeg',
+    imageAlt: 'Consultório comercial com iluminação pendente e marcenaria',
     description:
-      'Ambientes de trabalho, lojas e espaços de atendimento com presença, fluxo inteligente e linguagem alinhada à marca.',
+      'Ambientes de trabalho, clínicas, lojas e espaços de atendimento com presença, fluxo inteligente e linguagem alinhada à marca.',
   },
   {
-    title: 'Interiores',
+    title: 'Design de Interiores',
+    tag: 'Atmosfera & Marcenaria',
+    image: '/imgs/projetos/projeto7.jpeg',
+    imageAlt: 'Interiores de cozinha com armários verdes e madeira natural',
     description:
-      'Curadoria de layout, materiais, mobiliário, iluminação e detalhes para criar atmosferas consistentes e sofisticadas.',
+      'Curadoria completa de layout, marcenaria sob medida, mobiliário, iluminação e detalhes para criar atmosferas sofisticadas.',
   },
   {
     title: 'Consultoria arquitetônica',
+    tag: 'Direcionamento Ágil',
+    image: '/imgs/projetos/projeto11.jpg',
+    imageAlt: 'Detalhe de ambiente planejado com paleta suave e marcenaria leve',
     description:
-      'Orientação técnica e estética para destravar decisões, qualificar escolhas e conduzir reformas com mais clareza.',
+      'Orientação técnica e estética para destravar decisões, qualificar escolhas e conduzir transformações pontuais com clareza.',
   },
   {
     title: 'Acompanhamento de obra',
+    tag: 'Rigor Técnico',
+    image: '/imgs/projetos/projeto6.jpeg',
+    imageAlt: 'Espaço gourmet com pergolado em madeira e revestimento em tijolinho',
     description:
-      'Presença técnica para acompanhar etapas, interpretar projeto e proteger a intenção arquitetônica até a entrega.',
+      'Presença técnica para acompanhar etapas construtivas, interpretar projeto e proteger a intenção arquitetônica até a entrega.',
   },
 ]
 
@@ -51,20 +121,28 @@ type PortfolioPhoto = {
   alt: string
 }
 
-type SelectedPortfolioPhoto = PortfolioPhoto & {
-  projectTitle: string
+type ProjectItem = {
+  title: string
+  category: string
+  location: string
+  description: string
+  cover: string
+  coverAlt: string
+  photos: PortfolioPhoto[]
 }
 
-type HeroSlide = PortfolioPhoto & {
-  projectTitle: string
+type SelectedLightboxState = {
+  project: ProjectItem
+  photoIndex: number
 }
 
-const projects = [
+const projects: ProjectItem[] = [
   {
     title: 'Sala multifuncional',
-    category: 'Residencial',
+    category: 'Arquitetura Residencial',
+    location: 'São Luís, MA',
     description:
-      'Sala integrada a estação de trabalho, marcenaria planejada e pontos de cor para acolher descanso, estudo e rotina.',
+      'Sala integrada a estação de trabalho, marcenaria planejada e pontos de cor para acolher descanso, estudo e rotina com leveza.',
     cover: '/imgs/projetos/projeto8.jpeg',
     coverAlt:
       'Sala residencial com sofá claro, estante em marcenaria, estação de trabalho e parede verde suave',
@@ -81,7 +159,8 @@ const projects = [
   },
   {
     title: 'Consultório Sâmia Silva',
-    category: 'Comercial',
+    category: 'Arquitetura Comercial',
+    location: 'São Luís, MA',
     description:
       'Projeto de interiores para atendimento odontológico com recepção delicada, áreas técnicas claras e linguagem acolhedora.',
     cover: '/imgs/projetos/projeto4.jpeg',
@@ -111,10 +190,11 @@ const projects = [
     ],
   },
   {
-    title: 'Cozinha',
-    category: 'Residencial',
+    title: 'Cozinha Autoral',
+    category: 'Arquitetura Residencial',
+    location: 'São Luís, MA',
     description:
-      'Cozinha compacta com marcenaria sob medida, bancada funcional e materiais resistentes para uso diário.',
+      'Cozinha compacta com marcenaria sob medida em tom verde sálvia, bancada funcional e materiais resistentes para o cotidiano.',
     cover: '/imgs/projetos/projeto7.jpeg',
     coverAlt:
       'Cozinha compacta com armários verdes, bancada preta, madeira clara e pendentes naturais',
@@ -131,9 +211,10 @@ const projects = [
   },
   {
     title: 'Área Gourmet',
-    category: 'Residencial',
+    category: 'Arquitetura Residencial',
+    location: 'São Luís, MA',
     description:
-      'Espaço gourmet com bancada de apoio, churrasqueira em tijolinho e pergolado de madeira para receber com conforto.',
+      'Espaço gourmet com bancada de apoio, churrasqueira em tijolinho aparente e pergolado de madeira para receber com conforto.',
     cover: '/imgs/projetos/projeto6.jpeg',
     coverAlt:
       'Espaço gourmet com bancada, churrasqueira em tijolinho e pergolado de madeira',
@@ -146,7 +227,8 @@ const projects = [
   },
   {
     title: 'Quarto infantil Liz',
-    category: 'Interiores',
+    category: 'Design de Interiores',
+    location: 'São Luís, MA',
     description:
       'Quarto lúdico com marcenaria leve, bancada de estudos, brinquedoteca e uma paleta suave para acompanhar a infância.',
     cover: '/imgs/projetos/projeto11.jpg',
@@ -165,12 +247,66 @@ const projects = [
   },
 ]
 
-const heroSlides: HeroSlide[] = projects.flatMap((project) =>
-  project.photos.map((photo) => ({
-    ...photo,
-    projectTitle: project.title,
-  })),
-)
+const heroScenes = [
+  {
+    src: heroMainImage,
+    mobileSrc: heroMainMobileImage,
+    alt: 'Ambiente contemporâneo com materiais naturais, madeira quente e iluminação difusa da Dume Arquitetura',
+    title: 'Estética & Essência',
+    category: 'Arquitetura & Interiores',
+  },
+  {
+    src: '/imgs/projetos/projeto8.jpeg',
+    alt: 'Sala multifuncional com marcenaria sob medida e paleta acolhedora',
+    title: 'Sala multifuncional',
+    category: 'Residencial',
+  },
+  {
+    src: '/imgs/projetos/projeto4.jpeg',
+    alt: 'Consultório Sâmia Silva com marcenaria em madeira e iluminação dourada',
+    title: 'Consultório Sâmia Silva',
+    category: 'Comercial',
+  },
+  {
+    src: '/imgs/projetos/projeto7.jpeg',
+    alt: 'Cozinha com marcenaria verde e detalhes em madeira natural',
+    title: 'Cozinha Autoral',
+    category: 'Interiores',
+  },
+  {
+    src: '/imgs/projetos/projeto6.jpeg',
+    alt: 'Área Gourmet com pergolado em madeira e tijolinho',
+    title: 'Área Gourmet',
+    category: 'Residencial',
+  },
+]
+
+const processSteps = [
+  {
+    number: '01',
+    title: 'Imersão & Escuta Ativa',
+    description:
+      'Compreendemos sua rotina, referências, necessidades técnicas e expectativas de investimento em uma conversa próxima e estruturada.',
+  },
+  {
+    number: '02',
+    title: 'Estudo Preliminar & 3D',
+    description:
+      'Traduzimos o conceito em plantas humanizadas e volumetria 3D realista para que você visualize cada proporção, textura e iluminação.',
+  },
+  {
+    number: '03',
+    title: 'Projeto Executivo Completo',
+    description:
+      'Desenvolvemos todos os cadernos técnicos — marcenaria, pontos elétricos, iluminação, paginações e especificações — para uma obra sem imprevistos.',
+  },
+  {
+    number: '04',
+    title: 'Suporte & Acompanhamento',
+    description:
+      'Acompanhamos as etapas decisivas junto a fornecedores e equipe de obra para garantir fidelidade absoluta ao projeto concebido.',
+  },
+]
 
 const differentials = [
   'Projetos personalizados',
@@ -180,555 +316,6 @@ const differentials = [
   'Planejamento cuidadoso',
   'Elegância nos detalhes',
 ]
-
-function trackCtaClick(location: string, destination: string) {
-  track('CTA Clicked', { location, destination })
-}
-
-function trackContactClick(location: string, channel: string) {
-  track('Contact Clicked', { location, channel })
-}
-
-function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  useEffect(() => {
-    if (!isMenuOpen) {
-      return
-    }
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        setIsMenuOpen(false)
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isMenuOpen])
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('is-nav-open', isMenuOpen)
-    return () => document.documentElement.classList.remove('is-nav-open')
-  }, [isMenuOpen])
-
-  function closeMenu() {
-    setIsMenuOpen(false)
-  }
-
-  return (
-    <header
-      className={`site-header ${isMenuOpen ? 'is-menu-open' : ''}`}
-      aria-label="Cabeçalho principal"
-    >
-      <a
-        className="brand logo-link"
-        href="#inicio"
-        aria-label="Dume Arquitetura"
-        onClick={closeMenu}
-      >
-        <img
-          className="brand-icon brand-icon-header"
-          src={headerIconPath}
-          width={1050}
-          height={1094}
-          alt=""
-          aria-hidden="true"
-        />
-        <img
-          className="logo-image logo-image-header"
-          src={logoPath}
-          width={1065}
-          height={634}
-          alt="Dume Arquitetura"
-        />
-      </a>
-
-      <button
-        className="menu-toggle"
-        type="button"
-        aria-controls="main-navigation"
-        aria-expanded={isMenuOpen}
-        aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-        onClick={() => setIsMenuOpen((current) => !current)}
-      >
-        <span />
-        <span />
-        <span />
-      </button>
-
-      <nav
-        className={`main-nav ${isMenuOpen ? 'is-open' : ''}`}
-        id="main-navigation"
-        aria-label="Navegação principal"
-      >
-        {navLinks.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            onClick={() => {
-              track('Navigation Clicked', { label: link.label })
-              closeMenu()
-            }}
-          >
-            {link.label}
-          </a>
-        ))}
-
-        <a
-          className="mobile-nav-cta"
-          href="#contato"
-          onClick={() => {
-            trackCtaClick('Mobile navigation', 'contact')
-            closeMenu()
-          }}
-        >
-          Solicitar orçamento
-        </a>
-      </nav>
-
-      <a
-        className="header-cta"
-        href="#contato"
-        onClick={() => {
-          trackCtaClick('Header', 'contact')
-          closeMenu()
-        }}
-      >
-        Solicitar orçamento
-      </a>
-
-      <button
-        className="menu-backdrop"
-        type="button"
-        aria-label="Fechar menu"
-        tabIndex={isMenuOpen ? 0 : -1}
-        onClick={closeMenu}
-      />
-    </header>
-  )
-}
-
-function SectionIntro({
-  eyebrow,
-  title,
-  description,
-}: {
-  eyebrow: string
-  title: string
-  description?: string
-}) {
-  return (
-    <div className="section-intro reveal">
-      <p className="eyebrow">{eyebrow}</p>
-      <h2>{title}</h2>
-      {description ? <p>{description}</p> : null}
-    </div>
-  )
-}
-
-function Hero() {
-  const [activeSlideIndex, setActiveSlideIndex] = useState(0)
-  const [isCarouselPaused, setIsCarouselPaused] = useState(false)
-  const activeSlide = heroSlides[activeSlideIndex]
-
-  useEffect(() => {
-    if (isCarouselPaused || heroSlides.length <= 1) {
-      return
-    }
-
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-
-    if (reducedMotion.matches) {
-      return
-    }
-
-    const intervalId = window.setInterval(() => {
-      setActiveSlideIndex((currentIndex) => (currentIndex + 1) % heroSlides.length)
-    }, 5200)
-
-    return () => window.clearInterval(intervalId)
-  }, [isCarouselPaused])
-
-  function showPreviousSlide() {
-    setActiveSlideIndex((currentIndex) =>
-      currentIndex === 0 ? heroSlides.length - 1 : currentIndex - 1,
-    )
-  }
-
-  function showNextSlide() {
-    setActiveSlideIndex((currentIndex) => (currentIndex + 1) % heroSlides.length)
-  }
-
-  return (
-    <section className="hero-section" id="inicio">
-      <div className="hero-copy reveal">
-        <p className="eyebrow">Dume Arquitetura</p>
-        <h1>Arquitetura que traduz essência em espaço</h1>
-        <p className="hero-lead">
-          Projetos residenciais e comerciais criados com escuta, precisão e
-          sensibilidade para transformar ideias em ambientes com identidade.
-        </p>
-        <div className="hero-actions" aria-label="Ações principais">
-          <a
-            className="button button-primary"
-            href="#projetos"
-            onClick={() => trackCtaClick('Hero', 'projects')}
-          >
-            Conheça nossos projetos
-          </a>
-          <a
-            className="button button-secondary"
-            href="#contato"
-            onClick={() => trackCtaClick('Hero', 'contact')}
-          >
-            Fale conosco
-          </a>
-        </div>
-      </div>
-
-      <div
-        className="hero-board reveal reveal-delay"
-        aria-label="Carrossel de projetos em destaque"
-        onBlur={(event) => {
-          const nextTarget = event.relatedTarget
-
-          if (!(nextTarget instanceof Node) || !event.currentTarget.contains(nextTarget)) {
-            setIsCarouselPaused(false)
-          }
-        }}
-        onFocus={() => setIsCarouselPaused(true)}
-        onMouseEnter={() => setIsCarouselPaused(true)}
-        onMouseLeave={() => setIsCarouselPaused(false)}
-      >
-        <div className="hero-carousel" aria-live="polite">
-          {heroSlides.map((slide, index) => (
-            <figure
-              className={`hero-media ${index === activeSlideIndex ? 'is-active' : ''}`}
-              key={`${slide.projectTitle}-${slide.src}`}
-              aria-hidden={index !== activeSlideIndex}
-            >
-              <img
-                src={slide.src}
-                sizes="(max-width: 760px) calc(100vw - 36px), (max-width: 1100px) calc(100vw - 44px), 690px"
-                width={1280}
-                height={720}
-                loading={index === 0 ? 'eager' : 'lazy'}
-                decoding="async"
-                fetchPriority={index === 0 ? 'high' : 'auto'}
-                alt={slide.alt}
-              />
-            </figure>
-          ))}
-        </div>
-
-        <div className="hero-carousel-meta">
-          <strong>{activeSlide.projectTitle}</strong>
-        </div>
-
-        <div className="hero-carousel-controls" aria-label="Controles do carrossel">
-          <button
-            className="hero-carousel-control"
-            type="button"
-            aria-label="Imagem anterior"
-            onClick={showPreviousSlide}
-          >
-            <span aria-hidden="true">‹</span>
-          </button>
-          <button
-            className="hero-carousel-control"
-            type="button"
-            aria-label="Próxima imagem"
-            onClick={showNextSlide}
-          >
-            <span aria-hidden="true">›</span>
-          </button>
-        </div>
-
-        <div className="hero-carousel-dots" aria-label="Selecionar imagem do carrossel">
-          {heroSlides.map((slide, index) => (
-            <button
-              className={index === activeSlideIndex ? 'is-active' : ''}
-              type="button"
-              key={`${slide.src}-dot`}
-              aria-current={index === activeSlideIndex}
-              aria-label={`Mostrar ${slide.projectTitle}, imagem ${index + 1}`}
-              onClick={() => setActiveSlideIndex(index)}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function About() {
-  return (
-    <section className="page-section about-section" id="sobre">
-      <div className="about-grid">
-        <div className="about-identity">
-          <SectionIntro
-            eyebrow="Sobre a Dume"
-            title="Um olhar autoral para espaços que precisam fazer sentido."
-            description="A Dume Arquitetura nasce do encontro entre técnica, escuta e delicadeza visual."
-          />
-
-          <figure className="about-photo reveal">
-            <picture>
-              <source
-                media="(max-width: 760px)"
-                srcSet={foundersMobileImage}
-              />
-              <img
-                src={foundersImage}
-                srcSet={`${foundersMobileImage} 900w, ${foundersImage} 1500w`}
-                sizes="(max-width: 760px) calc(100vw - 36px), (max-width: 1100px) calc(100vw - 44px), 560px"
-                width={1500}
-                height={1002}
-                loading="lazy"
-                decoding="async"
-                alt="Amanda Duarte e Thalia Melônio, arquitetas e urbanistas da Dume Arquitetura"
-              />
-            </picture>
-            <figcaption>
-              <span>Amanda Duarte e Thalia Melônio</span>
-              <strong>Arquitetas, urbanistas e sócias da Dume.</strong>
-            </figcaption>
-          </figure>
-        </div>
-
-        <div className="about-content reveal">
-          <p>
-            Somos arquitetas e urbanistas apaixonadas por transformar ideias em
-            espaços com identidade, funcionalidade e significado. Através da
-            Dume Arquitetura, com base em São Luís (MA) e projetos desenvolvidos
-            em todo o Brasil, criamos propostas residenciais e comerciais
-            que unem estética, conforto e personalidade, sempre buscando criar
-            ambientes que traduzam a essência de cada cliente.
-          </p>
-
-          <div className="founders" aria-label="Arquitetas responsáveis">
-            <article>
-              <span>Arquiteta e urbanista</span>
-              <h3>Amanda Duarte</h3>
-            </article>
-            <article>
-              <span>Arquiteta e urbanista</span>
-              <h3>Thalia Melônio</h3>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function Services() {
-  return (
-    <section className="page-section services-section" id="servicos">
-      <SectionIntro
-        eyebrow="Serviços"
-        title="Do primeiro conceito ao detalhe que finaliza o ambiente."
-        description="Cada entrega é organizada para unir beleza, viabilidade e uma narrativa espacial coerente."
-      />
-
-      <div className="services-grid">
-        {services.map((service, index) => (
-          <article className="service-card reveal" key={service.title}>
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <h3>{service.title}</h3>
-            <p>{service.description}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  )
-}
-
-function Portfolio() {
-  const [selectedPhoto, setSelectedPhoto] = useState<SelectedPortfolioPhoto | null>(null)
-
-  useEffect(() => {
-    if (!selectedPhoto) {
-      document.documentElement.classList.remove('is-lightbox-open')
-      return
-    }
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        setSelectedPhoto(null)
-      }
-    }
-
-    document.documentElement.classList.add('is-lightbox-open')
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      document.documentElement.classList.remove('is-lightbox-open')
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [selectedPhoto])
-
-  function openPortfolioPhoto(photo: PortfolioPhoto, projectTitle: string) {
-    track('Portfolio Photo Opened', { project: projectTitle })
-    setSelectedPhoto({ ...photo, projectTitle })
-  }
-
-  function closePortfolioPhoto() {
-    setSelectedPhoto(null)
-  }
-
-  return (
-    <section className="page-section portfolio-section" id="projetos">
-      <div className="portfolio-heading">
-        <SectionIntro
-          eyebrow="Portfólio"
-          title="Projetos reais com identidade, detalhe e presença."
-          description="Uma seleção de ambientes desenvolvidos pela Dume em diferentes escalas, do comercial ao residencial."
-        />
-        <a
-          className="text-link"
-          href="#contato"
-          onClick={() => trackCtaClick('Portfolio', 'contact')}
-        >
-          Solicitar apresentação completa
-        </a>
-      </div>
-
-      <div className="portfolio-grid">
-        {projects.map((project) => (
-          <article className="project-card reveal" key={project.title}>
-            <figure className="project-media">
-              <button
-                className="project-image-button project-media-button"
-                type="button"
-                aria-label={`Ampliar imagem do projeto ${project.title}`}
-                onClick={() =>
-                  openPortfolioPhoto(
-                    { src: project.cover, alt: project.coverAlt },
-                    project.title,
-                  )
-                }
-              >
-                <img
-                  src={project.cover}
-                  width={1280}
-                  height={900}
-                  loading="lazy"
-                  decoding="async"
-                  alt={project.coverAlt}
-                />
-              </button>
-              <figcaption>{project.photos.length} fotos</figcaption>
-            </figure>
-            <div className="project-card-body">
-              <span>{project.category}</span>
-              <h3>{project.title}</h3>
-              <p>{project.description}</p>
-              <div className="project-photo-strip" aria-label={`Fotos do projeto ${project.title}`}>
-                {project.photos.map((photo) => (
-                  <button
-                    key={photo.src}
-                    className="project-image-button project-photo-button"
-                    type="button"
-                    aria-label={`Ampliar foto do projeto ${project.title}`}
-                    onClick={() => openPortfolioPhoto(photo, project.title)}
-                  >
-                    <img
-                      src={photo.src}
-                      width={320}
-                      height={320}
-                      loading="lazy"
-                      decoding="async"
-                      alt={photo.alt}
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
-
-      {selectedPhoto ? (
-        <div
-          className="portfolio-lightbox"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Foto ampliada de ${selectedPhoto.projectTitle}`}
-          onClick={closePortfolioPhoto}
-        >
-          <div
-            className="portfolio-lightbox-content"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              className="portfolio-lightbox-close"
-              type="button"
-              aria-label="Fechar visualização expandida"
-              onClick={closePortfolioPhoto}
-              autoFocus
-            >
-              ×
-            </button>
-            <figure className="portfolio-lightbox-figure">
-              <img
-                src={selectedPhoto.src}
-                alt={selectedPhoto.alt}
-                width={1600}
-                height={1200}
-                decoding="async"
-              />
-              <figcaption>
-                <span>{selectedPhoto.projectTitle}</span>
-                <p>{selectedPhoto.alt}</p>
-              </figcaption>
-            </figure>
-          </div>
-        </div>
-      ) : null}
-    </section>
-  )
-}
-
-function Differentials() {
-  return (
-    <section className="page-section differentials-section">
-      <SectionIntro
-        eyebrow="Diferenciais"
-        title="Processo atento, resultado sensível."
-        description="A experiência da Dume se apoia em escolhas bem fundamentadas e em uma relação próxima com cada cliente."
-      />
-
-      <div className="differentials-list">
-        {differentials.map((item) => (
-          <article className="differential-item reveal" key={item}>
-            <span aria-hidden="true" />
-            <p>{item}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-  )
-}
-
-function EmotionalCallout() {
-  return (
-    <section className="emotional-section" aria-label="Chamada emocional">
-      <div className="emotional-content reveal">
-        <p className="script-line">Cada espaço conta uma história.</p>
-        <h2>A nossa missão é projetar a sua.</h2>
-        <a
-          className="button button-light"
-          href="#contato"
-          onClick={() => trackCtaClick('Emotional callout', 'contact')}
-        >
-          Começar um projeto
-        </a>
-      </div>
-    </section>
-  )
-}
 
 const faqs = [
   {
@@ -758,28 +345,964 @@ const faqs = [
   },
 ]
 
+function trackCtaClick(location: string, destination: string) {
+  track('CTA Clicked', { location, destination })
+}
+
+function trackContactClick(location: string, channel: string) {
+  track('Contact Clicked', { location, channel })
+}
+
+function ArrowUpRightIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M7 17L17 7" />
+      <path d="M7 7h10v10" />
+    </svg>
+  )
+}
+
+function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    function handleScroll() {
+      setIsScrolled(window.scrollY > 48)
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isMenuOpen])
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('is-nav-open', isMenuOpen)
+    return () => document.documentElement.classList.remove('is-nav-open')
+  }, [isMenuOpen])
+
+  function closeMenu() {
+    setIsMenuOpen(false)
+  }
+
+  const useLightBrand = !isScrolled && !isMenuOpen
+
+  return (
+    <header
+      className={`site-header ${isScrolled ? 'is-scrolled' : ''} ${
+        isMenuOpen ? 'is-menu-open' : ''
+      }`}
+      aria-label="Cabeçalho principal"
+    >
+      <div className="site-header-inner">
+        <a
+          className="brand logo-link"
+          href="#inicio"
+          aria-label="Dume Arquitetura"
+          onClick={closeMenu}
+        >
+          <img
+            className="brand-icon brand-icon-header"
+            src={useLightBrand ? footerIconPath : headerIconPath}
+            width={1050}
+            height={1094}
+            alt=""
+            aria-hidden="true"
+          />
+          <div className="brand-wordmark">
+            <img
+              className="logo-image logo-image-header"
+              src={useLightBrand ? footerLogoPath : logoPath}
+              width={1065}
+              height={634}
+              alt="Dume Arquitetura"
+            />
+            <span className="brand-sublabel">ARQUITETURA & INTERIORES</span>
+          </div>
+        </a>
+
+        <nav
+          className={`main-nav ${isMenuOpen ? 'is-open' : ''}`}
+          id="main-navigation"
+          aria-label="Navegação principal"
+        >
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => {
+                track('Navigation Clicked', { label: link.label })
+                closeMenu()
+              }}
+            >
+              {link.label}
+            </a>
+          ))}
+
+          <a
+            className="mobile-nav-cta"
+            href="#contato"
+            onClick={() => {
+              trackCtaClick('Mobile navigation', 'contact')
+              closeMenu()
+            }}
+          >
+            <span>Solicitar orçamento</span>
+            <ArrowUpRightIcon />
+          </a>
+        </nav>
+
+        <a
+          className="header-cta"
+          href="#contato"
+          onClick={() => {
+            trackCtaClick('Header', 'contact')
+            closeMenu()
+          }}
+        >
+          <span>Solicitar orçamento</span>
+          <span className="header-cta-arrow" aria-hidden="true">
+            <ArrowUpRightIcon />
+          </span>
+        </a>
+
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-controls="main-navigation"
+          aria-expanded={isMenuOpen}
+          aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+          onClick={() => setIsMenuOpen((current) => !current)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
+
+      <button
+        className="menu-backdrop"
+        type="button"
+        aria-label="Fechar menu"
+        tabIndex={isMenuOpen ? 0 : -1}
+        onClick={closeMenu}
+      />
+    </header>
+  )
+}
+
+function Hero() {
+  const [activeSceneIndex, setActiveSceneIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const activeScene = heroScenes[activeSceneIndex]
+
+  useEffect(() => {
+    if (isPaused) {
+      return
+    }
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (reducedMotion.matches) {
+      return
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveSceneIndex((prev) => (prev + 1) % heroScenes.length)
+    }, 6400)
+
+    return () => window.clearInterval(intervalId)
+  }, [isPaused])
+
+  return (
+    <section
+      className="hero-stage"
+      id="inicio"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div className="hero-backdrop" aria-live="polite">
+        {heroScenes.map((scene, index) => (
+          <figure
+            key={scene.src}
+            className={`hero-backdrop-slide ${
+              index === activeSceneIndex ? 'is-active' : ''
+            }`}
+            aria-hidden={index !== activeSceneIndex}
+          >
+            {scene.mobileSrc ? (
+              <picture>
+                <source media="(max-width: 760px)" srcSet={scene.mobileSrc} />
+                <img
+                  src={scene.src}
+                  srcSet={`${scene.mobileSrc} 960w, ${scene.src} 1536w`}
+                  sizes="100vw"
+                  width={1536}
+                  height={1024}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  fetchPriority={index === 0 ? 'high' : 'auto'}
+                  alt={scene.alt}
+                />
+              </picture>
+            ) : (
+              <img
+                src={scene.src}
+                sizes="100vw"
+                width={1280}
+                height={800}
+                loading="lazy"
+                decoding="async"
+                alt={scene.alt}
+              />
+            )}
+          </figure>
+        ))}
+        <div className="hero-backdrop-overlay" />
+      </div>
+
+      <div className="hero-content-grid">
+        <div className="hero-main-copy reveal">
+          <div className="hero-kicker">
+            <span className="hero-kicker-dot" aria-hidden="true" />
+            <span>ARQUITETURA RESIDENCIAL, COMERCIAL & INTERIORES • SÃO LUÍS, MA</span>
+          </div>
+
+          <h1>
+            Arquitetura que traduz{' '}
+            <em>essência em espaço.</em>
+          </h1>
+
+          <p className="hero-subtitle">
+            Projetos autorais que unem estética atemporal, funcionalidade
+            estratégica e sofisticação silenciosa para transformar a forma de
+            viver e trabalhar.
+          </p>
+
+          <div className="hero-cta-group" aria-label="Ações principais">
+            <a
+              className="pill-cta pill-cta-primary"
+              href="#projetos"
+              onClick={() => trackCtaClick('Hero', 'projects')}
+            >
+              <span>Conheça nossos projetos</span>
+              <span className="pill-cta-circle" aria-hidden="true">
+                <ArrowUpRightIcon />
+              </span>
+            </a>
+
+            <a
+              className="pill-cta pill-cta-glass"
+              href="#contato"
+              onClick={() => trackCtaClick('Hero', 'contact')}
+            >
+              <span>Solicitar um orçamento</span>
+            </a>
+          </div>
+        </div>
+
+        <aside className="hero-side-meta reveal">
+          <div className="hero-poetic-note">
+            <p>Design que expressa identidade.</p>
+            <p>Arquitetura que gera valor e permanência.</p>
+          </div>
+
+          <div className="hero-scene-switcher" aria-label="Selecionar ambiente em destaque">
+            <div className="hero-scene-info">
+              <span>{String(activeSceneIndex + 1).padStart(2, '0')} / {String(heroScenes.length).padStart(2, '0')} • {activeScene.category}</span>
+              <strong>{activeScene.title}</strong>
+            </div>
+
+            <div className="hero-scene-dots">
+              {heroScenes.map((scene, index) => (
+                <button
+                  key={scene.title}
+                  type="button"
+                  className={index === activeSceneIndex ? 'is-active' : ''}
+                  aria-label={`Visualizar ambiente ${scene.title}`}
+                  aria-current={index === activeSceneIndex}
+                  onClick={() => setActiveSceneIndex(index)}
+                />
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div className="hero-ribbon" aria-label="Pilares da Dume Arquitetura">
+        <div className="hero-ribbon-inner">
+          {heroPillars.map((pillar) => (
+            <div className="hero-ribbon-item" key={pillar.label}>
+              <span className="hero-ribbon-icon">{pillar.icon}</span>
+              <span>{pillar.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function About() {
+  return (
+    <section className="about-editorial-section" id="sobre">
+      <a
+        href="#sobre"
+        className="section-notch"
+        aria-label="Rolar para seção Sobre a Dume"
+      >
+        <span aria-hidden="true">⌄</span>
+      </a>
+
+      <div className="editorial-container">
+        {/* Top Row: Hofstaetter 01 index + Decoris asymmetrical text & dual vertical cards */}
+        <div className="about-top-row">
+          <div className="about-narrative reveal">
+            <div className="editorial-index-bar">
+              <span className="section-index">01 / O ESCRITÓRIO</span>
+              <span className="decoris-dots" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+                <b />
+              </span>
+            </div>
+
+            <h2 className="editorial-serif-title">SOBRE A DUME</h2>
+            <p className="editorial-subtitle">
+              O essencial ganha forma quando estética e técnica caminham em equilíbrio.
+            </p>
+
+            <div className="about-paragraphs">
+              <p>
+                <strong>Na Dume Arquitetura,</strong> cada projeto nasce de uma
+                imersão profunda no estilo de vida, na rotina e nas expectativas
+                de nossos clientes. Liderado pelas arquitetas e urbanistas{' '}
+                <strong>Amanda Duarte</strong> e <strong>Thalia Melônio</strong>,
+                nosso escritório em São Luís (MA) desenvolve propostas
+                residenciais e comerciais para todo o Brasil.
+              </p>
+              <p>
+                Não projetamos apenas ambientes. Criamos experiências
+                arquitetônicas que acolhem a memória afetiva, organizam os fluxos
+                do dia a dia e elevam a forma de viver e receber.
+              </p>
+              <p>
+                Nossa assinatura combina linhas contemporâneas, marcenaria
+                inteligente e materiais naturais, sempre com precisão técnica e
+                atenção absoluta aos detalhes.
+              </p>
+            </div>
+
+            <div className="founders-signature-row" aria-label="Arquitetas sócias">
+              <article className="founder-badge">
+                <span>Arquiteta e Urbanista • Sócia</span>
+                <h3>Amanda Duarte</h3>
+              </article>
+              <article className="founder-badge">
+                <span>Arquiteta e Urbanista • Sócia</span>
+                <h3>Thalia Melônio</h3>
+              </article>
+            </div>
+          </div>
+
+          <div className="about-dual-gallery reveal">
+            <figure className="about-tall-card about-tall-card-founders">
+              <picture>
+                <source
+                  media="(max-width: 760px)"
+                  srcSet={foundersMobileImage}
+                />
+                <img
+                  src={foundersImage}
+                  srcSet={`${foundersMobileImage} 900w, ${foundersImage} 1500w`}
+                  sizes="(max-width: 760px) calc(100vw - 36px), 380px"
+                  width={1500}
+                  height={1002}
+                  loading="lazy"
+                  decoding="async"
+                  alt="Amanda Duarte e Thalia Melônio, arquitetas e urbanistas da Dume Arquitetura"
+                />
+              </picture>
+              <figcaption>
+                <span>Direção Criativa & Técnica</span>
+                <strong>Amanda Duarte & Thalia Melônio</strong>
+              </figcaption>
+            </figure>
+
+            <figure className="about-tall-card about-tall-card-detail">
+              <img
+                src="/imgs/projetos/projeto4.jpeg"
+                width={900}
+                height={1200}
+                loading="lazy"
+                decoding="async"
+                alt="Detalhe de iluminação e marcenaria em madeira natural projetado pela Dume"
+              />
+              <figcaption>
+                <span>Curadoria Material</span>
+                <strong>Luz, madeira e proporção</strong>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Portfolio() {
+  const [activeFilter, setActiveFilter] = useState<string>('Todos')
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [lightbox, setLightbox] = useState<SelectedLightboxState | null>(null)
+  const trackRef = useRef<HTMLDivElement | null>(null)
+
+  const categories = ['Todos', 'Residencial', 'Comercial', 'Interiores']
+
+  const filteredProjects =
+    activeFilter === 'Todos'
+      ? projects
+      : projects.filter((project) =>
+          project.category.toLowerCase().includes(activeFilter.toLowerCase()),
+        )
+
+  function selectFilter(category: string) {
+    setActiveFilter(category)
+    setCurrentSlide(0)
+    if (trackRef.current) {
+      trackRef.current.scrollTo({ left: 0, behavior: 'smooth' })
+    }
+  }
+
+  useEffect(() => {
+    if (!lightbox) {
+      document.documentElement.classList.remove('is-lightbox-open')
+      return
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setLightbox(null)
+      } else if (event.key === 'ArrowRight') {
+        setLightbox((prev) =>
+          prev
+            ? {
+                ...prev,
+                photoIndex: (prev.photoIndex + 1) % prev.project.photos.length,
+              }
+            : null,
+        )
+      } else if (event.key === 'ArrowLeft') {
+        setLightbox((prev) =>
+          prev
+            ? {
+                ...prev,
+                photoIndex:
+                  prev.photoIndex === 0
+                    ? prev.project.photos.length - 1
+                    : prev.photoIndex - 1,
+              }
+            : null,
+        )
+      }
+    }
+
+    document.documentElement.classList.add('is-lightbox-open')
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.documentElement.classList.remove('is-lightbox-open')
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [lightbox])
+
+  function scrollCarousel(direction: 'prev' | 'next') {
+    if (!trackRef.current || filteredProjects.length === 0) {
+      return
+    }
+
+    const nextIndex =
+      direction === 'next'
+        ? (currentSlide + 1) % filteredProjects.length
+        : currentSlide === 0
+          ? filteredProjects.length - 1
+          : currentSlide - 1
+
+    setCurrentSlide(nextIndex)
+
+    const cards = trackRef.current.querySelectorAll<HTMLElement>('.showcase-card')
+    const targetCard = cards[nextIndex]
+    if (targetCard) {
+      trackRef.current.scrollTo({
+        left: targetCard.offsetLeft - trackRef.current.offsetLeft,
+        behavior: 'smooth',
+      })
+    }
+  }
+
+  function openProjectLightbox(project: ProjectItem, photoIndex = 0) {
+    track('Portfolio Photo Opened', { project: project.title })
+    setLightbox({ project, photoIndex })
+  }
+
+  function closeLightbox() {
+    setLightbox(null)
+  }
+
+  return (
+    <section className="portfolio-dark-section" id="projetos">
+      <div className="editorial-container">
+        <div className="portfolio-dark-header reveal">
+          <div className="portfolio-dark-title-group">
+            <span className="section-index section-index-light">02 / PROJETOS</span>
+            <h2>
+              Espaços que
+              <br />
+              falam por si.
+            </h2>
+          </div>
+
+          <div className="portfolio-dark-controls-group">
+            <div className="portfolio-filter-pills" role="tablist" aria-label="Filtrar projetos por categoria">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeFilter === category}
+                  className={`filter-pill ${activeFilter === category ? 'is-active' : ''}`}
+                  onClick={() => selectFilter(category)}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+
+            <div className="showcase-nav-bar" aria-label="Navegação de projetos">
+              <span className="showcase-counter">
+                {String(Math.min(currentSlide + 1, filteredProjects.length)).padStart(2, '0')} /{' '}
+                {String(filteredProjects.length).padStart(2, '0')}
+              </span>
+              <button
+                type="button"
+                className="showcase-circle-btn"
+                aria-label="Projeto anterior"
+                onClick={() => scrollCarousel('prev')}
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                className="showcase-circle-btn"
+                aria-label="Próximo projeto"
+                onClick={() => scrollCarousel('next')}
+              >
+                →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="showcase-track"
+          ref={trackRef}
+          onScroll={(e) => {
+            const container = e.currentTarget
+            const scrollLeft = container.scrollLeft
+            const cardWidth = container.firstElementChild?.clientWidth || 1
+            const estimatedIndex = Math.round(scrollLeft / (cardWidth + 28))
+            if (
+              estimatedIndex >= 0 &&
+              estimatedIndex < filteredProjects.length &&
+              estimatedIndex !== currentSlide
+            ) {
+              setCurrentSlide(estimatedIndex)
+            }
+          }}
+        >
+          {filteredProjects.map((project, index) => (
+            <article
+              className="showcase-card reveal"
+              key={project.title}
+              onClick={() => setCurrentSlide(index)}
+            >
+              <div className="showcase-media-frame">
+                <button
+                  type="button"
+                  className="showcase-main-image-btn"
+                  aria-label={`Abrir galeria completa do projeto ${project.title}`}
+                  onClick={() => openProjectLightbox(project, 0)}
+                >
+                  <img
+                    src={project.cover}
+                    width={1280}
+                    height={960}
+                    loading="lazy"
+                    decoding="async"
+                    alt={project.coverAlt}
+                  />
+                </button>
+
+                <span className="showcase-photo-count">
+                  {project.photos.length} {project.photos.length === 1 ? 'foto' : 'fotos'}
+                </span>
+
+                {/* Hofstaetter-inspired floating glass bar inside image */}
+                <div className="showcase-glass-bar">
+                  <div className="showcase-glass-meta">
+                    <span>{project.category.toUpperCase()} • {project.location}</span>
+                    <h3>{project.title}</h3>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="showcase-expand-circle"
+                    aria-label={`Ver projeto ${project.title}`}
+                    onClick={() => openProjectLightbox(project, 0)}
+                  >
+                    <ArrowUpRightIcon />
+                  </button>
+                </div>
+              </div>
+
+              <div className="showcase-card-footer">
+                <p>{project.description}</p>
+
+                <div
+                  className="showcase-thumbs"
+                  aria-label={`Miniaturas do projeto ${project.title}`}
+                >
+                  {project.photos.map((photo, photoIdx) => (
+                    <button
+                      key={photo.src}
+                      type="button"
+                      className="showcase-thumb-btn"
+                      aria-label={`Ver foto ${photoIdx + 1} de ${project.title}`}
+                      onClick={() => openProjectLightbox(project, photoIdx)}
+                    >
+                      <img
+                        src={photo.src}
+                        width={160}
+                        height={160}
+                        loading="lazy"
+                        decoding="async"
+                        alt={photo.alt}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="portfolio-dark-footbar">
+          <span>FORMA, LUZ E MATÉRIA.</span>
+          <a
+            href="#contato"
+            onClick={() => trackCtaClick('Portfolio footbar', 'contact')}
+          >
+            SOLICITAR APRESENTAÇÃO COMPLETA →
+          </a>
+        </div>
+      </div>
+
+      {lightbox ? (
+        <div
+          className="portfolio-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Galeria do projeto ${lightbox.project.title}`}
+          onClick={closeLightbox}
+        >
+          <div
+            className="portfolio-lightbox-content"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="portfolio-lightbox-topbar">
+              <div>
+                <span className="lightbox-category">{lightbox.project.category}</span>
+                <strong>{lightbox.project.title}</strong>
+              </div>
+
+              <div className="lightbox-controls">
+                {lightbox.project.photos.length > 1 ? (
+                  <>
+                    <button
+                      type="button"
+                      className="lightbox-nav-btn"
+                      aria-label="Foto anterior"
+                      onClick={() =>
+                        setLightbox((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                photoIndex:
+                                  prev.photoIndex === 0
+                                    ? prev.project.photos.length - 1
+                                    : prev.photoIndex - 1,
+                              }
+                            : null,
+                        )
+                      }
+                    >
+                      ‹
+                    </button>
+                    <span className="lightbox-counter">
+                      {lightbox.photoIndex + 1} / {lightbox.project.photos.length}
+                    </span>
+                    <button
+                      type="button"
+                      className="lightbox-nav-btn"
+                      aria-label="Próxima foto"
+                      onClick={() =>
+                        setLightbox((prev) =>
+                          prev
+                            ? {
+                                ...prev,
+                                photoIndex:
+                                  (prev.photoIndex + 1) % prev.project.photos.length,
+                              }
+                            : null,
+                        )
+                      }
+                    >
+                      ›
+                    </button>
+                  </>
+                ) : null}
+
+                <button
+                  className="portfolio-lightbox-close"
+                  type="button"
+                  aria-label="Fechar visualização expandida"
+                  onClick={closeLightbox}
+                  autoFocus
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+
+            <figure className="portfolio-lightbox-figure">
+              <img
+                src={lightbox.project.photos[lightbox.photoIndex].src}
+                alt={lightbox.project.photos[lightbox.photoIndex].alt}
+                width={1600}
+                height={1200}
+                decoding="async"
+              />
+              <figcaption>
+                <p>{lightbox.project.photos[lightbox.photoIndex].alt}</p>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      ) : null}
+    </section>
+  )
+}
+
+function Services() {
+  const [activeServiceIndex, setActiveServiceIndex] = useState(1)
+
+  return (
+    <section className="services-strip-section" id="servicos">
+      <div className="editorial-container">
+        <div className="services-centered-header reveal">
+          <span className="section-index">03 / NOSSA ATUAÇÃO</span>
+          <h2>
+            Um escritório, do primeiro
+            <br />
+            traço <strong>à última peça.</strong>
+          </h2>
+          <p>
+            Um escritório completo, com expertise técnica, estrutura e olhar
+            sensível para transformar diferentes conceitos em projetos únicos.
+          </p>
+        </div>
+      </div>
+
+      {/* Image 5 Inspired Full-Bleed Staggered Architectural Strip */}
+      <div className="services-interactive-strip" role="list">
+        {services.map((service, index) => {
+          const isActive = activeServiceIndex === index
+          return (
+            <article
+              key={service.title}
+              role="listitem"
+              className={`service-strip-card ${isActive ? 'is-active' : ''}`}
+              onMouseEnter={() => setActiveServiceIndex(index)}
+              onFocus={() => setActiveServiceIndex(index)}
+              onClick={() => setActiveServiceIndex(index)}
+            >
+              <img
+                src={service.image}
+                alt={service.imageAlt}
+                width={900}
+                height={1200}
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="service-strip-overlay" />
+
+              <div className="service-strip-top">
+                <span className="service-strip-num">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className="service-strip-tag">{service.tag}</span>
+              </div>
+
+              <div className="service-strip-content">
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+                <a
+                  href="#contato"
+                  className="service-strip-link"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    trackCtaClick(`Service: ${service.title}`, 'contact')
+                  }}
+                >
+                  <span>SOLICITAR PROPOSTA</span>
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
+function ProcessAndDifferentials() {
+  return (
+    <section className="page-section process-section" id="processo">
+      <div className="editorial-container">
+        <div className="process-header-grid reveal">
+          <div>
+            <span className="section-index">04 / MÉTODO & DIFERENCIAIS</span>
+            <h2 className="editorial-heading">
+              Processo atento,
+              <br />
+              resultado <em>sensível.</em>
+            </h2>
+          </div>
+          <p className="process-lead">
+            A experiência da Dume se apoia em escolhas técnicas bem
+            fundamentadas, cronograma claro e uma relação próxima com cada
+            cliente do estudo inicial à entrega.
+          </p>
+        </div>
+
+        <div className="process-steps-grid">
+          {processSteps.map((step) => (
+            <article className="process-step-card reveal" key={step.number}>
+              <span className="process-step-number">{step.number}</span>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="differentials-band reveal" aria-label="Nossos diferenciais">
+          {differentials.map((item, idx) => (
+            <div className="differential-pill" key={item}>
+              <span className="differential-pill-num">
+                {String(idx + 1).padStart(2, '0')}
+              </span>
+              <p>{item}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function EmotionalCallout() {
+  return (
+    <section className="emotional-section" aria-label="Chamada emocional">
+      <div className="emotional-content reveal">
+        <p className="script-line">Cada espaço conta uma história.</p>
+        <h2>A nossa missão é projetar a sua.</h2>
+        <a
+          className="pill-cta pill-cta-light"
+          href="#contato"
+          onClick={() => trackCtaClick('Emotional callout', 'contact')}
+        >
+          <span>Começar um projeto</span>
+          <span className="pill-cta-circle" aria-hidden="true">
+            <ArrowUpRightIcon />
+          </span>
+        </a>
+      </div>
+    </section>
+  )
+}
+
 function FAQ() {
   return (
     <section className="page-section faq-section" id="faq">
-      <SectionIntro
-        eyebrow="Dúvidas Frequentes"
-        title="Perguntas comuns sobre nossos projetos."
-        description="Tire suas dúvidas sobre o funcionamento do escritório, etapas de desenvolvimento, prazos e regiões atendidas."
-      />
+      <div className="editorial-container faq-layout">
+        <div className="faq-intro-col reveal">
+          <span className="section-index">05 / DÚVIDAS FREQUENTES</span>
+          <h2 className="editorial-heading">
+            Perguntas comuns sobre nossos projetos.
+          </h2>
+          <p>
+            Tire suas dúvidas sobre o funcionamento do escritório, etapas de
+            desenvolvimento, prazos e regiões atendidas.
+          </p>
+          <a
+            href="#contato"
+            className="inline-arrow-link"
+            onClick={() => trackCtaClick('FAQ', 'contact')}
+          >
+            <span>Tem outra dúvida? Fale conosco</span>
+            <ArrowUpRightIcon />
+          </a>
+        </div>
 
-      <div className="faq-list">
-        {faqs.map((faq, index) => (
-          <details className="faq-item reveal" key={faq.question}>
-            <summary className="faq-summary">
-              <span className="faq-number">{String(index + 1).padStart(2, '0')}</span>
-              <h3 className="faq-question">{faq.question}</h3>
-              <span className="faq-icon" aria-hidden="true">+</span>
-            </summary>
-            <div className="faq-answer">
-              <p>{faq.answer}</p>
-            </div>
-          </details>
-        ))}
+        <div className="faq-list">
+          {faqs.map((faq, index) => (
+            <details className="faq-item reveal" key={faq.question}>
+              <summary className="faq-summary">
+                <span className="faq-number">{String(index + 1).padStart(2, '0')}</span>
+                <h3 className="faq-question">{faq.question}</h3>
+                <span className="faq-icon" aria-hidden="true">+</span>
+              </summary>
+              <div className="faq-answer">
+                <p>{faq.answer}</p>
+              </div>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -788,60 +1311,66 @@ function FAQ() {
 function Contact() {
   const whatsappMessage =
     'Ol%C3%A1%2C%20Dume%20Arquitetura.%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20um%20projeto.'
-  const whatsappHref =
-    `https://wa.me/5598987151513?text=${whatsappMessage}`
-  const secondaryWhatsappHref =
-    `https://wa.me/5598981404014?text=${whatsappMessage}`
+  const whatsappHref = `https://wa.me/5598987151513?text=${whatsappMessage}`
+  const secondaryWhatsappHref = `https://wa.me/5598981404014?text=${whatsappMessage}`
 
   return (
     <section className="page-section contact-section" id="contato">
-      <div className="contact-grid">
-        <div className="contact-copy">
-          <SectionIntro
-            eyebrow="Contato"
-            title="Solicite seu orçamento pelo WhatsApp."
-            description="Uma conversa direta para entender seu espaço, sua rotina e o tipo de projeto que você deseja iniciar."
-          />
+      <div className="editorial-container contact-grid">
+        <div className="contact-copy reveal">
+          <span className="section-index">06 / CONTATO & ORÇAMENTO</span>
+          <h2 className="editorial-heading">
+            Vamos conversar sobre o seu <em>próximo espaço?</em>
+          </h2>
+          <p className="contact-lead">
+            Uma conversa direta com as arquitetas para entender seu espaço, sua
+            rotina e o tipo de projeto que você deseja iniciar.
+          </p>
 
           <div className="contact-details" aria-label="Informações de contato">
-            <p>
-              <span>WhatsApp</span>
-              <a
-                className="contact-phone-link"
-                href={whatsappHref}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => trackContactClick('Contact details', 'whatsapp-primary')}
-              >
-                WhatsApp: (98) 98715-1513
-              </a>
-              <a
-                className="contact-phone-link"
-                href={secondaryWhatsappHref}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => trackContactClick('Contact details', 'whatsapp-secondary')}
-              >
-                WhatsApp: (98) 98140-4014
-              </a>
-            </p>
-            <p>
-              <span>Email</span>
+            <div className="contact-detail-row">
+              <span>WhatsApp Direto</span>
+              <div className="contact-phones">
+                <a
+                  className="contact-phone-link"
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => trackContactClick('Contact details', 'whatsapp-primary')}
+                >
+                  (98) 98715-1513 <small>• Arq. Amanda / Thalia</small>
+                </a>
+                <a
+                  className="contact-phone-link"
+                  href={secondaryWhatsappHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => trackContactClick('Contact details', 'whatsapp-secondary')}
+                >
+                  (98) 98140-4014 <small>• Atendimento Dume</small>
+                </a>
+              </div>
+            </div>
+
+            <div className="contact-detail-row">
+              <span>E-mail</span>
               <a
                 href="mailto:dumearquitetura03@gmail.com"
                 onClick={() => trackContactClick('Contact details', 'email')}
               >
                 dumearquitetura03@gmail.com
               </a>
-            </p>
-            <p>
+            </div>
+
+            <div className="contact-detail-row">
               <span>Localização</span>
-              São Luís – MA • Projetos presenciais e remotos em todo o Brasil
-            </p>
-            <p>
-              <span>Atendimento</span>
-              Projetos residenciais, comerciais, interiores e consultoria
-            </p>
+              <p>São Luís – MA • Projetos presenciais e remotos em todo o Brasil</p>
+            </div>
+
+            <div className="contact-detail-row">
+              <span>Escopo de Atuação</span>
+              <p>Projetos residenciais, comerciais, interiores, consultoria e obras</p>
+            </div>
           </div>
         </div>
 
@@ -850,43 +1379,48 @@ function Contact() {
           aria-label="Solicitar orçamento pelo WhatsApp"
         >
           <div>
-            <p className="eyebrow">Orçamento direto</p>
-            <h3>Conte sua ideia e receba o próximo passo da Dume.</h3>
+            <span className="panel-eyebrow">ATENDIMENTO PERSONALIZADO</span>
+            <h3>Conte sua ideia e receba a proposta da Dume.</h3>
             <p className="whatsapp-panel-text">
               O atendimento começa em uma conversa objetiva, com espaço para
-              compartilhar referências, medidas, localização e o momento atual
-              do seu projeto.
+              compartilhar referências, metragem aproximada, localização e o
+              momento atual do seu imóvel ou negócio.
             </p>
           </div>
 
           <ul className="contact-benefits" aria-label="Etapas iniciais do atendimento">
             <li>
               <span>01</span>
-              Contato inicial pelo WhatsApp
+              Contato inicial direto pelo WhatsApp
             </li>
             <li>
               <span>02</span>
-              Direcionamento para o melhor serviço
+              Análise do perfil e direcionamento ideal
             </li>
             <li>
               <span>03</span>
-              Próximos passos para orçamento
+              Apresentação de escopo e proposta detalhada
             </li>
           </ul>
 
-          <a
-            className="whatsapp-link whatsapp-link-strong"
-            href={whatsappHref}
-            target="_blank"
-            rel="noreferrer"
-            onClick={() => trackContactClick('Contact panel', 'whatsapp-primary')}
-          >
-            Solicitar orçamento no WhatsApp
-          </a>
+          <div className="contact-panel-actions">
+            <a
+              className="whatsapp-cta-btn"
+              href={whatsappHref}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => trackContactClick('Contact panel', 'whatsapp-primary')}
+            >
+              <span>Solicitar orçamento no WhatsApp</span>
+              <span className="whatsapp-cta-circle" aria-hidden="true">
+                <ArrowUpRightIcon />
+              </span>
+            </a>
 
-          <p className="whatsapp-note">
-            Atendimento pelos números (98) 98715-1513 e (98) 98140-4014
-          </p>
+            <p className="whatsapp-note">
+              Atendimento pelos números (98) 98715-1513 e (98) 98140-4014
+            </p>
+          </div>
         </aside>
       </div>
     </section>
@@ -896,55 +1430,68 @@ function Contact() {
 function Footer() {
   return (
     <footer className="site-footer">
-      <div>
-        <a className="footer-brand logo-link" href="#inicio">
-          <img
-            className="brand-icon brand-icon-footer"
-            src={footerIconPath}
-            width={1920}
-            height={1080}
-            alt=""
-            aria-hidden="true"
-          />
-          <img
-            className="logo-image logo-image-footer"
-            src={footerLogoPath}
-            width={1065}
-            height={634}
-            alt="Dume Arquitetura"
-          />
-        </a>
-        <p>Projetos com identidade, funcionalidade e significado.</p>
-      </div>
-
-      <nav aria-label="Links rápidos do rodapé">
-        {navLinks.map((link) => (
-          <a key={link.href} href={link.href}>
-            {link.label}
+      <div className="editorial-container site-footer-grid">
+        <div className="footer-brand-col">
+          <a className="footer-brand logo-link" href="#inicio">
+            <img
+              className="brand-icon brand-icon-footer"
+              src={footerIconPath}
+              width={1920}
+              height={1080}
+              alt=""
+              aria-hidden="true"
+            />
+            <img
+              className="logo-image logo-image-footer"
+              src={footerLogoPath}
+              width={1065}
+              height={634}
+              alt="Dume Arquitetura"
+            />
           </a>
-        ))}
-      </nav>
+          <p>
+            Arquitetura residencial, comercial e interiores com identidade,
+            funcionalidade e significado. São Luís – MA para todo o Brasil.
+          </p>
+        </div>
 
-      <div className="social-links" aria-label="Redes sociais">
-        <a
-          href="https://www.instagram.com/dume.arquitetura/"
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => trackContactClick('Footer', 'instagram')}
-        >
-          Instagram
-        </a>
-        {/* <a href="https://www.behance.net/" target="_blank" rel="noreferrer">
-          Behance
-        </a>
-        <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">
-          LinkedIn
-        </a> */}
+        <div className="footer-links-col">
+          <span className="footer-col-title">Navegação</span>
+          <nav aria-label="Links rápidos do rodapé">
+            {navLinks.map((link) => (
+              <a key={link.href} href={link.href}>
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+
+        <div className="footer-links-col">
+          <span className="footer-col-title">Conecte-se</span>
+          <div className="social-links" aria-label="Redes sociais">
+            <a
+              href="https://www.instagram.com/dume.arquitetura/"
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => trackContactClick('Footer', 'instagram')}
+            >
+              <span>Instagram @dume.arquitetura</span>
+              <ArrowUpRightIcon />
+            </a>
+            <a
+              href="mailto:dumearquitetura03@gmail.com"
+              onClick={() => trackContactClick('Footer', 'email')}
+            >
+              <span>dumearquitetura03@gmail.com</span>
+            </a>
+          </div>
+        </div>
+
+        <div className="credits">
+          <p>© 2026 Dume Arquitetura • Amanda Duarte & Thalia Melônio.</p>
+          <p>Todos os direitos reservados.</p>
+        </div>
       </div>
-
-      <p className="credits">
-        Dume Arquitetura, 2026. Todos os direitos reservados.
-      </p>
     </footer>
   )
 }
@@ -962,11 +1509,11 @@ function App() {
           }
         })
       },
-      { rootMargin: '0px 0px -10% 0px', threshold: 0.12 },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.1 },
     )
 
     animatedElements.forEach((element, index) => {
-      element.style.setProperty('--reveal-delay', `${Math.min(index % 5, 4) * 70}ms`)
+      element.style.setProperty('--reveal-delay', `${Math.min(index % 4, 3) * 65}ms`)
       observer.observe(element)
     })
 
@@ -979,9 +1526,9 @@ function App() {
       <main>
         <Hero />
         <About />
-        <Services />
         <Portfolio />
-        <Differentials />
+        <Services />
+        <ProcessAndDifferentials />
         <EmotionalCallout />
         <FAQ />
         <Contact />

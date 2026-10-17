@@ -1,23 +1,57 @@
 :root {
+  /* Core Dume Palette (Preserved) */
   --color-brown: #482720;
   --color-accent: #945630;
   --color-green: #353f30;
   --color-pastel: #d1c1a6;
   --color-light: #eee7dc;
+
+  /* Expanded Tonal Variations of Dume Colors */
+  --brown-950: #160c09;
+  --brown-900: #22120e;
+  --brown-850: #2d1813;
+  --brown-800: #391f19;
+  --brown-700: #482720;
+  --brown-600: #5e352c;
+
+  --accent-700: #784222;
+  --accent-600: #945630;
+  --accent-500: #ad693f;
+  --accent-400: #c4835a;
+  --accent-300: #d9a482;
+
+  --green-950: #141812;
+  --green-900: #1e241b;
+  --green-800: #293125;
+  --green-700: #353f30;
+  --green-600: #485542;
+  --green-500: #61705a;
+
+  --pastel-600: #b39e7d;
+  --pastel-500: #c3b092;
+  --pastel-400: #d1c1a6;
+  --pastel-300: #dfd3be;
+
+  --light-50: #faf7f2;
+  --light-100: #f4efe6;
+  --light-200: #eee7dc;
+  --light-300: #e4dacb;
+
+  /* Editorial & Architectural Typography */
   --font-display: 'BLACK MANGO', 'Black Mango', 'Cormorant Garamond', Georgia,
     serif;
   --font-detail: 'Anthology Black', 'Anthology', 'Cormorant Garamond', Georgia,
     serif;
-  --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
+  --font-body: 'Plus Jakarta Sans', Inter, ui-sans-serif, system-ui,
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  background: var(--color-light);
-  color: var(--color-green);
+  background: var(--light-100);
+  color: var(--green-800);
   font-family: var(--font-body);
   font-size: 16px;
   font-synthesis: none;
-  letter-spacing: 0;
-  line-height: 1.5;
+  letter-spacing: -0.01em;
+  line-height: 1.55;
   scroll-behavior: smooth;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -30,20 +64,23 @@
   @font-face { font-family: 'Anthology Black'; src: url('/fonts/anthology-black.woff2') format('woff2'); }
 */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
-  background: var(--color-light);
+  background: var(--brown-950);
+  scroll-padding-top: 88px;
 }
 
 body {
-  background:
-    linear-gradient(180deg, rgba(209, 193, 166, 0.36), rgba(238, 231, 220, 0) 360px),
-    var(--color-light);
+  background: var(--light-100);
+  color: var(--green-800);
   margin: 0;
   min-width: 320px;
+  overflow-x: hidden;
 }
 
 body,
@@ -53,14 +90,9 @@ textarea {
   font-family: var(--font-body);
 }
 
-button,
-input,
-textarea {
-  letter-spacing: 0;
-}
-
 button {
   border: 0;
+  background: none;
 }
 
 a {
@@ -75,10 +107,10 @@ svg {
 
 ::selection {
   background: var(--color-accent);
-  color: var(--color-light);
+  color: var(--light-50);
 }
 
 :focus-visible {
-  outline: 3px solid rgba(148, 86, 48, 0.42);
+  outline: 2px solid var(--accent-500);
   outline-offset: 3px;
 }
