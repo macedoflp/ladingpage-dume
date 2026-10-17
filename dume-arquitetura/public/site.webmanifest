@@ -1,0 +1,17 @@
+{
+  "name": "Dume Arquitetura",
+  "short_name": "Dume Arq",
+  "description": "Projetos residenciais, comerciais, interiores e consultoria arquitetônica em São Luís - MA.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#eee7dc",
+  "theme_color": "#eee7dc",
+  "icons": [
+    {
+      "src": "/imgs/DumeIcone.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

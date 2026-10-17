@@ -2,23 +2,248 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/imgs/DumeIcone.png" />
-    <link rel="apple-touch-icon" href="/imgs/DumeIcone.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dume Arquitetura | Escritório de Arquitetura e Interiores em São Luís - MA</title>
+
+    <!-- SEO Meta Tags -->
     <meta
       name="description"
-      content="Dume Arquitetura: projetos residenciais, comerciais, interiores e urbanismo com identidade, funcionalidade e significado."
+      content="Escritório de arquitetura em São Luís - MA liderado por Amanda Duarte e Thalia Melônio. Projetos residenciais, comerciais, interiores e consultoria com identidade e funcionalidade."
     />
+    <meta
+      name="keywords"
+      content="arquitetura são luís, escritório de arquitetura são luís ma, arquiteto são luís, design de interiores são luís, projetos residenciais, projetos comerciais, dume arquitetura, consultoria arquitetônica, reforma residencial, amanda duarte, thalia melônio"
+    />
+    <meta name="author" content="Dume Arquitetura" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <link rel="canonical" href="https://arquiteturadume.com.br/" />
+
+    <!-- Local SEO Geo Tags (São Luís, Maranhão) -->
+    <meta name="geo.region" content="BR-MA" />
+    <meta name="geo.placename" content="São Luís" />
+    <meta name="geo.position" content="-2.5307;-44.3068" />
+    <meta name="ICBM" content="-2.5307, -44.3068" />
+
+    <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Dume Arquitetura" />
+    <meta property="og:url" content="https://arquiteturadume.com.br/" />
+    <meta property="og:title" content="Dume Arquitetura | Escritório de Arquitetura e Interiores" />
+    <meta
+      property="og:description"
+      content="Projetos residenciais, comerciais, interiores e consultoria arquitetônica com identidade, funcionalidade e significado em São Luís - MA."
+    />
+    <meta property="og:image" content="https://arquiteturadume.com.br/imgs/dume-hero.jpg" />
+    <meta property="og:image:secure_url" content="https://arquiteturadume.com.br/imgs/dume-hero.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1536" />
+    <meta property="og:image:height" content="1024" />
+    <meta property="og:image:alt" content="Dume Arquitetura - Projetos residenciais, comerciais e interiores em São Luís - MA" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dume Arquitetura | Arquitetura e Interiores em São Luís - MA" />
+    <meta
+      name="twitter:description"
+      content="Escritório de arquitetura em São Luís - MA liderado por Amanda Duarte e Thalia Melônio. Projetos com identidade e funcionalidade."
+    />
+    <meta name="twitter:image" content="https://arquiteturadume.com.br/imgs/dume-hero.jpg" />
+    <meta name="twitter:image:alt" content="Dume Arquitetura" />
+
+    <!-- Icons & Manifest -->
+    <link rel="icon" type="image/png" href="/imgs/DumeIcone.png" />
+    <link rel="apple-touch-icon" href="/imgs/DumeIcone.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#eee7dc" />
+    <meta name="msapplication-TileColor" content="#482720" />
+
+    <!-- Resource Preloads -->
     <link
       rel="preload"
       as="image"
       href="/imgs/dume-hero.jpg"
       imagesrcset="/imgs/dume-hero-mobile.jpg 960w, /imgs/dume-hero.jpg 1536w"
       imagesizes="(max-width: 760px) calc(100vw - 36px), (max-width: 1100px) calc(100vw - 44px), 690px"
+      fetchpriority="high"
     />
-    <title>Dume Arquitetura | Projetos com identidade</title>
+
+    <!-- Structured Data (Schema.org JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": ["ArchitecturalService", "ProfessionalService", "LocalBusiness"],
+            "@id": "https://arquiteturadume.com.br/#business",
+            "name": "Dume Arquitetura",
+            "alternateName": "Dume Arquitetura e Urbanismo",
+            "url": "https://arquiteturadume.com.br/",
+            "logo": "https://arquiteturadume.com.br/imgs/logo.png",
+            "image": "https://arquiteturadume.com.br/imgs/dume-hero.jpg",
+            "description": "Escritório de arquitetura, urbanismo e design de interiores em São Luís - MA. Desenvolvemos projetos residenciais, comerciais, reformas e consultorias arquitetônicas com identidade, funcionalidade e significado.",
+            "telephone": ["+55-98-98715-1513", "+55-98-98140-4014"],
+            "email": "dumearquitetura03@gmail.com",
+            "priceRange": "$$",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "São Luís",
+              "addressRegion": "MA",
+              "addressCountry": "BR"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": -2.5307,
+              "longitude": -44.3068
+            },
+            "areaServed": [
+              {
+                "@type": "City",
+                "name": "São Luís"
+              },
+              {
+                "@type": "AdministrativeArea",
+                "name": "Maranhão"
+              },
+              {
+                "@type": "Country",
+                "name": "Brasil"
+              }
+            ],
+            "founder": [
+              {
+                "@type": "Person",
+                "name": "Amanda Duarte",
+                "jobTitle": "Arquiteta e Urbanista"
+              },
+              {
+                "@type": "Person",
+                "name": "Thalia Melônio",
+                "jobTitle": "Arquiteta e Urbanista"
+              }
+            ],
+            "sameAs": [
+              "https://www.instagram.com/dume.arquitetura/"
+            ],
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Serviços de Arquitetura e Interiores",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Projetos Residenciais",
+                    "description": "Casas e apartamentos planejados para acolher a rotina, preservar memória afetiva e valorizar o modo de viver de cada cliente."
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Projetos Comerciais",
+                    "description": "Ambientes de trabalho, lojas e espaços de atendimento com presença, fluxo inteligente e linguagem alinhada à marca."
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Design de Interiores",
+                    "description": "Curadoria completa de layout, marcenaria, mobiliário, iluminação e acabamentos para criar atmosferas sofisticadas."
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Consultoria Arquitetônica",
+                    "description": "Orientação técnica e estética para destravar decisões, qualificar escolhas e conduzir reformas com clareza."
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "Acompanhamento de Obra",
+                    "description": "Presença técnica para acompanhar etapas construtivas, interpretar projeto e proteger a intenção arquitetônica até a entrega."
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://arquiteturadume.com.br/#website",
+            "url": "https://arquiteturadume.com.br/",
+            "name": "Dume Arquitetura",
+            "description": "Projetos de arquitetura, interiores e consultoria com identidade, funcionalidade e significado em São Luís - MA.",
+            "inLanguage": "pt-BR",
+            "publisher": {
+              "@id": "https://arquiteturadume.com.br/#business"
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://arquiteturadume.com.br/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Onde fica o escritório da Dume Arquitetura e quais regiões vocês atendem?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Nosso escritório está sediado em São Luís - MA. Atendemos presencialmente toda a Grande São Luís e desenvolvemos projetos completos e consultorias online para clientes em qualquer região do Brasil."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Quais tipos de serviços de arquitetura a Dume realiza?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Desenvolvemos projetos arquitetônicos residenciais (casas e apartamentos), projetos comerciais e corporativos, design de interiores completo, consultorias arquitetônicas pontuais e acompanhamento técnico de obras."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Como funciona o processo de desenvolvimento de um projeto?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Nosso método é estruturado em escuta ativa e planejamento: iniciamos com um briefing detalhado, apresentamos estudos preliminares com maquete 3D, refinamos o anteprojeto e entregamos o projeto executivo completo com especificações detalhadas de marcenaria, iluminação e materiais."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "A Dume faz projetos apenas para construções novas ou também para reformas?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Atuamos em ambas as frentes: projetos de edificações novas do zero e reformas parciais ou completas de imóveis residenciais e comerciais."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Como solicitar um orçamento com a Dume Arquitetura?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Você pode iniciar o contato diretamente pelo WhatsApp nos números (98) 98715-1513 ou (98) 98140-4014. Conversamos sobre as características do seu espaço e objetivos para montar uma proposta personalizada."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
+    <noscript>
+      <div style="padding: 24px; font-family: sans-serif; background-color: #eee7dc; color: #482720;">
+        <h1>Dume Arquitetura | Escritório de Arquitetura e Interiores em São Luís - MA</h1>
+        <p>Projetos residenciais, comerciais, design de interiores e consultoria arquitetônica com identidade, funcionalidade e significado por Amanda Duarte e Thalia Melônio.</p>
+        <p>Atendimento presencial em São Luís - MA e projetos remotos para todo o Brasil.</p>
+        <p>WhatsApp: <a href="https://wa.me/5598987151513">(98) 98715-1513</a> | <a href="https://wa.me/5598981404014">(98) 98140-4014</a></p>
+        <p>Email: <a href="mailto:dumearquitetura03@gmail.com">dumearquitetura03@gmail.com</a></p>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://arquiteturadume.com.br/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://arquiteturadume.com.br/imgs/dume-hero.jpg</image:loc>
+      <image:title>Dume Arquitetura - Projetos residenciais, comerciais e interiores em São Luís - MA</image:title>
+      <image:caption>Projetos com identidade, funcionalidade e significado</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://arquiteturadume.com.br/imgs/thalia-amanda.jpg</image:loc>
+      <image:title>Amanda Duarte e Thalia Melônio - Dume Arquitetura</image:title>
+      <image:caption>Arquitetas e urbanistas fundadoras da Dume Arquitetura</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://arquiteturadume.com.br/imgs/projetos/projeto8.jpeg</image:loc>
+      <image:title>Projeto Sala Multifuncional - Dume Arquitetura</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://arquiteturadume.com.br/imgs/projetos/projeto4.jpeg</image:loc>
+      <image:title>Consultório Odontológico Sâmia Silva - Dume Arquitetura</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://arquiteturadume.com.br/imgs/projetos/projeto7.jpeg</image:loc>
+      <image:title>Projeto Cozinha Funcional - Dume Arquitetura</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://arquiteturadume.com.br/imgs/projetos/projeto6.jpeg</image:loc>
+      <image:title>Projeto Área Gourmet com Pergolado - Dume Arquitetura</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://arquiteturadume.com.br/imgs/projetos/projeto11.jpg</image:loc>
+      <image:title>Projeto Quarto Infantil Liz - Dume Arquitetura</image:title>
+    </image:image>
+  </url>
+</urlset>

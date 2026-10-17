@@ -1084,6 +1084,114 @@
   margin-top: 34px;
 }
 
+.faq-section {
+  background:
+    linear-gradient(180deg, rgba(209, 193, 166, 0.22), rgba(238, 231, 220, 0) 50%),
+    var(--color-light);
+  border-top: 1px solid rgba(72, 39, 32, 0.12);
+}
+
+.faq-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 52px;
+  max-width: 980px;
+}
+
+.faq-item {
+  background: rgba(238, 231, 220, 0.6);
+  border: 1px solid rgba(72, 39, 32, 0.16);
+  border-radius: 2px;
+  overflow: hidden;
+  transition: background-color 220ms ease, border-color 220ms ease;
+}
+
+.faq-item[open] {
+  background: rgba(238, 231, 220, 0.95);
+  border-color: rgba(148, 86, 48, 0.38);
+}
+
+.faq-summary {
+  align-items: center;
+  cursor: pointer;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: auto 1fr auto;
+  list-style: none;
+  padding: 24px 28px;
+  user-select: none;
+}
+
+.faq-summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-number {
+  color: var(--color-accent);
+  font-family: var(--font-detail);
+  font-size: 1.18rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.faq-question {
+  color: var(--color-brown);
+  font-family: var(--font-display);
+  font-size: 1.34rem;
+  font-weight: normal;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.faq-icon {
+  align-items: center;
+  border: 1px solid rgba(72, 39, 32, 0.2);
+  border-radius: 50%;
+  color: var(--color-accent);
+  display: flex;
+  font-size: 1.4rem;
+  font-weight: 300;
+  height: 36px;
+  justify-content: center;
+  line-height: 1;
+  transition: transform 260ms ease, background-color 220ms ease, color 220ms ease;
+  width: 36px;
+}
+
+.faq-item[open] .faq-icon {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-light);
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  border-top: 1px solid rgba(72, 39, 32, 0.1);
+  padding: 20px 28px 26px 74px;
+}
+
+.faq-answer p {
+  color: var(--color-green);
+  font-size: 1.02rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .faq-summary {
+    gap: 14px;
+    padding: 18px 20px;
+  }
+
+  .faq-question {
+    font-size: 1.15rem;
+  }
+
+  .faq-answer {
+    padding: 16px 20px 22px 20px;
+  }
+}
+
 .contact-section {
   background:
     linear-gradient(90deg, rgba(209, 193, 166, 0.32), rgba(238, 231, 220, 0) 48%),

@@ -14,6 +14,7 @@ const navLinks = [
   { label: 'Sobre', href: '#sobre' },
   { label: 'Projetos', href: '#projetos' },
   { label: 'Serviços', href: '#servicos' },
+  { label: 'Dúvidas', href: '#faq' },
   { label: 'Contato', href: '#contato' },
 ]
 
@@ -500,7 +501,8 @@ function About() {
           <p>
             Somos arquitetas e urbanistas apaixonadas por transformar ideias em
             espaços com identidade, funcionalidade e significado. Através da
-            Dume Arquitetura, desenvolvemos projetos residenciais e comerciais
+            Dume Arquitetura, com base em São Luís (MA) e projetos desenvolvidos
+            em todo o Brasil, criamos propostas residenciais e comerciais
             que unem estética, conforto e personalidade, sempre buscando criar
             ambientes que traduzam a essência de cada cliente.
           </p>
@@ -728,6 +730,61 @@ function EmotionalCallout() {
   )
 }
 
+const faqs = [
+  {
+    question: 'Onde fica o escritório da Dume Arquitetura e quais regiões vocês atendem?',
+    answer:
+      'Nosso escritório está sediado em São Luís - MA. Realizamos atendimento presencial em toda a Grande São Luís e desenvolvemos projetos de arquitetura, interiores e consultorias no formato online para clientes em todo o Brasil.',
+  },
+  {
+    question: 'Quais tipos de serviços de arquitetura a Dume realiza?',
+    answer:
+      'Desenvolvemos projetos arquitetônicos residenciais (casas e apartamentos), projetos comerciais e corporativos, projetos completos de interiores, consultorias arquitetônicas pontuais e acompanhamento técnico de obras.',
+  },
+  {
+    question: 'Como funciona o processo de desenvolvimento de um projeto?',
+    answer:
+      'Nosso método é organizado em etapas transparentes: escuta ativa e briefing detalhado, estudos preliminares com maquete 3D para você visualizar os espaços, anteprojeto com especificações de materiais e entrega do projeto executivo completo com detalhamentos para a obra.',
+  },
+  {
+    question: 'A Dume faz projetos apenas para construções novas ou também para reformas?',
+    answer:
+      'Atuamos tanto na concepção de construções novas a partir do zero quanto em reformas completas ou parciais para renovar a funcionalidade, iluminação e estética do seu imóvel.',
+  },
+  {
+    question: 'Como solicitar um orçamento com a Dume Arquitetura?',
+    answer:
+      'O contato inicial é feito de forma prática pelo WhatsApp. Basta clicar nos botões de contato para conversarmos sobre as necessidades do seu espaço, prazos e direcionarmos a melhor proposta para o seu projeto.',
+  },
+]
+
+function FAQ() {
+  return (
+    <section className="page-section faq-section" id="faq">
+      <SectionIntro
+        eyebrow="Dúvidas Frequentes"
+        title="Perguntas comuns sobre nossos projetos."
+        description="Tire suas dúvidas sobre o funcionamento do escritório, etapas de desenvolvimento, prazos e regiões atendidas."
+      />
+
+      <div className="faq-list">
+        {faqs.map((faq, index) => (
+          <details className="faq-item reveal" key={faq.question}>
+            <summary className="faq-summary">
+              <span className="faq-number">{String(index + 1).padStart(2, '0')}</span>
+              <h3 className="faq-question">{faq.question}</h3>
+              <span className="faq-icon" aria-hidden="true">+</span>
+            </summary>
+            <div className="faq-answer">
+              <p>{faq.answer}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function Contact() {
   const whatsappMessage =
     'Ol%C3%A1%2C%20Dume%20Arquitetura.%20Gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20um%20projeto.'
@@ -778,8 +835,12 @@ function Contact() {
               </a>
             </p>
             <p>
+              <span>Localização</span>
+              São Luís – MA • Projetos presenciais e remotos em todo o Brasil
+            </p>
+            <p>
               <span>Atendimento</span>
-              Projetos residenciais, comerciais e urbanos
+              Projetos residenciais, comerciais, interiores e consultoria
             </p>
           </div>
         </div>
@@ -922,6 +983,7 @@ function App() {
         <Portfolio />
         <Differentials />
         <EmotionalCallout />
+        <FAQ />
         <Contact />
       </main>
       <Footer />
